@@ -15,7 +15,6 @@ Bundler.require
 # our app files - export to separate require.rb file when grows out of hand
 
 require './lib/mylib'
-require './secret_config'
 require './settings'
 require './db/mongo'
 require_all './bl'

@@ -1,4 +1,4 @@
-source "http://rubygems.org"
+source "https://rubygems.org"
 
 ruby '2.2.0'
 
@@ -16,5 +16,5 @@ gem 'activesupport',      	'4.0.0' # utility functions like hash.slice
 #gem 'random-word',          '1.3.0' # for random words for testing
 #gem 'bower',                '0.0.2' # for frontend asset management
 gem 'require_all'
-gem 'httpclient'
+gem 'httpclient',           '2.5.2'
 gem 'pony'                            # emails

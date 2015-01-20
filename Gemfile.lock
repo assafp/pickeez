@@ -1,5 +1,5 @@
 GEM
-  remote: http://rubygems.org/
+  remote: https://rubygems.org/
   specs:
     activesupport (4.0.0)
       i18n (~> 0.6, >= 0.6.4)
@@ -87,7 +87,7 @@ DEPENDENCIES
   bcrypt (= 3.1.7)
   bson_ext (= 1.11.1)
   colorize (= 0.7.3)
-  httpclient
+  httpclient (= 2.5.2)
   mongo (= 1.11.1)
   pony
   pry-byebug (= 2.0.0)
