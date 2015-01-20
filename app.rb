@@ -29,7 +29,7 @@ get '/error' do
 end
 
 get "/fb" do
-  redirect "https://graph.facebook.com/oauth/authorize?client_id=#{@client_id}&redirect_uri=http://localhost:8002/callback"
+  redirect "https://graph.facebook.com/oauth/authorize?client_id=#{@client_id}&redirect_uri=#{$root_url}/callback"
 end
 
 get '/me' do

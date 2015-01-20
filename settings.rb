@@ -10,4 +10,4 @@ set :my_key,          'my_val' # settings.my_key == 'my_val
 # The following are exposed globally via $varname.
 $app_name   = 'pickeez'
 $prod       = settings.production? #env is set via RACK_ENV=production in prod 
-$root_url   = 'http://localhost:9292'
+$root_url   = $prod ? 'http://pickeez.herokuapp.com' : 'http://localhost:8002'
