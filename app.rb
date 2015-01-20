@@ -40,7 +40,7 @@ end
 get "/callback" do
   code = params[:code]
 
-  endpoint = "https://graph.facebook.com/oauth/access_token?client_id=#{@client_id}&redirect_uri=http://localhost:8002/callback&client_secret=#{@client_secret}&code=#{code}"
+  endpoint = "https://graph.facebook.com/oauth/access_token?client_id=#{@client_id}&redirect_uri=#{$root_url}/callback&client_secret=#{@client_secret}&code=#{code}"
   response = HTTPClient.new.get endpoint
   access_token = CGI.parse(response.body)["access_token"][0]
   
