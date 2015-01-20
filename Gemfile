@@ -1,6 +1,6 @@
 source "http://rubygems.org"
 
-ruby '2.0.0'
+ruby '2.2.0'
 
 gem 'sinatra',         			'1.4.5' # main http server
 gem 'sinatra-contrib', 			'1.4.2' # sinatra extensions 

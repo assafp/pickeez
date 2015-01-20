@@ -3,7 +3,7 @@ set :raise_errors,    false
 set :show_exceptions, false
 
 set :sessions,        true 
-set :session_secret,  $sc[:session_secret]
+set :session_secret,  ENV['PICKEEZ_SESSION_SECRET']
 
 set :my_key,          'my_val' # settings.my_key == 'my_val
 

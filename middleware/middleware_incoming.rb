@@ -3,6 +3,6 @@ use Rack::Parser, :content_types => {
 }
 
 before do
-  @client_id = sc[:facebook_app_id]
-  @client_secret = sc[:facebook_app_secret]
+  @client_id = ENV['PICKEEZ_FB_APP_ID']
+  @client_secret = ENV['PICKEEZ_FB_APP_SECRET']
 end
