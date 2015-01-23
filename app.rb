@@ -36,6 +36,10 @@ get '/me' do
   Users.get(session[:user_id]) || 'no user'
 end
 
+get '/session' do
+  session
+end
+
 #app will probably call this endpoint with code. 
 get "/callback" do
   code = params[:code]
