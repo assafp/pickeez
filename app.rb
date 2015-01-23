@@ -37,7 +37,7 @@ get '/me' do
 end
 
 get '/session' do
-  session
+  session.to_h
 end
 
 #app will probably call this endpoint with code. 
