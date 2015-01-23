@@ -1,5 +1,6 @@
 not_found do
-  'Whoops, nothing there: 404.'
+  content_type 'application/json'
+  {msg: 'Whoops, nothing there: 404.'}.to_json
 end
 
 error do

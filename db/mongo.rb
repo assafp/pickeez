@@ -59,7 +59,7 @@ class Mongo::Collection
 		#opts can be e.g. { :upsert => true }
 		fields.updated_at = Time.now
 		res = self.update({_id: _id}, {'$set' => fields}, opts)		
-		{_id: _id, res: res}
+		{_id: _id}.merge(res).indiff
 	end
 
 end

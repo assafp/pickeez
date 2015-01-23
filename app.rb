@@ -32,6 +32,11 @@ get '/error' do
   a = b
 end
 
+get '/halt' do
+  halt(400, {a:1})
+end
+
+
 get "/fb" do
   redirect "https://graph.facebook.com/oauth/authorize?client_id=#{@client_id}&redirect_uri=#{$root_url}/fb_enter"
 end
