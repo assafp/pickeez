@@ -21,15 +21,19 @@ require_all './bl'
 require_all './middleware'
 
 get '/' do
-	{msg: 'hello from pickeez_rb_be'}
+	{msg: "welcome to pickeez_rb_be. We recognize you as user_id #{cu}"}
 end	
+
+get '/raise404' do
+  status 404
+end
 
 get '/error' do 
   a = b
 end
 
 get "/fb" do
-  redirect "https://graph.facebook.com/oauth/authorize?client_id=#{@client_id}&redirect_uri=#{$root_url}/callback"
+  redirect "https://graph.facebook.com/oauth/authorize?client_id=#{@client_id}&redirect_uri=#{$root_url}/fb_enter"
 end
 
 get '/me' do
@@ -41,10 +45,10 @@ get '/session' do
 end
 
 #app will probably call this endpoint with code. 
-get "/callback" do
+get "/fb_enter" do
   code = params[:code]
 
-  endpoint = "https://graph.facebook.com/oauth/access_token?client_id=#{@client_id}&redirect_uri=#{$root_url}/callback&client_secret=#{@client_secret}&code=#{code}"
+  endpoint = "https://graph.facebook.com/oauth/access_token?client_id=#{@client_id}&redirect_uri=#{$root_url}/fb_enter&client_secret=#{@client_secret}&code=#{code}"
   response = HTTPClient.new.get endpoint
   access_token = CGI.parse(response.body)["access_token"][0]
   

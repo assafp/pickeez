@@ -1,4 +1,5 @@
 # The Darkest Ruby Magic.
+require 'active_support/core_ext/hash/indifferent_access'
 
 module Enumerable
   # Enable dot access on hashes and hash-like objects.
@@ -26,6 +27,13 @@ class Hash
     args = (args.map {|v| v.to_s}) + (args.map {|v| v.to_sym})
     self.slice(*args)
   end
+
+  def hawi
+    HashWithIndifferentAccess.new self
+  end
+  alias_method :hwia, :hawi
+  alias_method :indiff, :hawi
+
 end
 
 def nice_id

@@ -27,3 +27,7 @@ module Users
   end
 
 end
+
+get '/users' do
+  {num: $users.count, users: $users.all}
+end

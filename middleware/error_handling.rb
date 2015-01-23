@@ -1,5 +1,5 @@
 not_found do
-	{status: 404, msg: "Not Found", custom: "helium-12"}
+  'Whoops, nothing there: 404.'
 end
 
 error do

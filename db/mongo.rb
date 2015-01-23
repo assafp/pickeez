@@ -28,7 +28,6 @@ class Mongo::Collection
 	alias_method :find_by, :find_one
   alias_method :get, :find_one
 
-
 	def find_all(params = {})
 		self.find(params).to_a
 	end
@@ -38,7 +37,7 @@ class Mongo::Collection
 		doc[:_id] = nice_id
 		doc[:created_at] = Time.now
 		self.insert(doc)
-		doc
+		doc.indiff
 	end
 
 	def first
@@ -56,8 +55,11 @@ class Mongo::Collection
 	end
 	alias_method :any, :one
 
-	def update_id(_id, fields)
+	def update_id(_id, fields, opts = {})
+		#opts can be e.g. { :upsert => true }
 		fields.updated_at = Time.now
-		self.update({_id: _id}, '$set' => fields)		
+		res = self.update({_id: _id}, {'$set' => fields}, opts)		
+		{_id: _id, res: res}
 	end
+
 end
