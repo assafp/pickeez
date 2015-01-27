@@ -24,6 +24,10 @@ get '/' do
 	{msg: "welcome to pickeez_rb_be. We recognize you as user_id #{cu}"}
 end	
 
+post '/' do
+  'post ack'
+end
+
 get '/raise404' do
   status 404
 end

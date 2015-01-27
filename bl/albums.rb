@@ -43,7 +43,6 @@ namespace '/albums' do
   end
 
   post '/:id' do
-
     res = Albums.update(params[:id], params) 
     (res[:updatedExisting] && res[:_id]) ? {id: res[:_id]} : 404      
   end
