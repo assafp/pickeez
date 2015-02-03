@@ -13,7 +13,8 @@ module Users
     $users.get(id)
   end
 
-  def get_or_create_by_fb_id(fb_id, fb_data)
+  def get_or_create_by_fb_id(fb_id, fb_data = {})
+    fb_id = fb_id.to_s
     $users.get({fb_id: fb_id}) || create({fb_id: fb_id, fb_data: fb_data})
   end 
 
@@ -31,3 +32,5 @@ end
 get '/users' do
   {num: $users.count, users: $users.all}
 end
+
+Users.get_or_create_by_fb_id(123, {name: "test user"})

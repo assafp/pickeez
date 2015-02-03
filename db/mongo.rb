@@ -34,7 +34,7 @@ class Mongo::Collection
 	alias_method :all, :find_all
 
 	def add(doc)
-		doc[:_id] = nice_id
+		doc[:_id] ||= nice_id
 		doc[:created_at] = Time.now
 		self.insert(doc)
 		doc.indiff

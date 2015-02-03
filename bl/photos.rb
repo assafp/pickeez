@@ -61,5 +61,17 @@ namespace '/photos' do
     (res[:updatedExisting] && res[:_id]) ? {id: res[:_id]} : 404      
   end
 
+  post '/:id/set_filter' do     
+    filter_type = {like: 'like', dislike: 'dislike'}[params[:type].to_sym] || 'none'
+    $photos.update_id(params[:id], { "filters.#{cu}" => filter_type } )
+    {msg: "ok"}
+  end
+
+  post '/:id/set_computed' do     
+    action = params[:action] == 'push' ? '$addToSet' : '$pull'
+    $photos.update({_id: params[:id]}, { action => {computed_filters: cu } })
+    {msg: "ok"}
+  end
+
 end
 
