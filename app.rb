@@ -45,17 +45,17 @@ get "/fb" do
 end
 
 get '/me' do
-  Users.get(session[:user_id]) || 'no user'
+  current_user
 end
 
-get '/session' do
-  session.to_h
-end
+# get '/session' do
+#   session.to_h
+# end
 
 #app will probably call this endpoint with code. 
 get "/fb_enter" do
   code = params[:code]
-
+  bp
   endpoint = "https://graph.facebook.com/oauth/access_token?client_id=#{@client_id}&redirect_uri=#{$root_url}/fb_enter&client_secret=#{@client_secret}&code=#{code}"
   response = HTTPClient.new.get endpoint
   access_token = CGI.parse(response.body)["access_token"][0]
@@ -66,13 +66,7 @@ get "/fb_enter" do
   fb_data = JSON.parse(response.body)
   
   user = Users.get_or_create_by_fb_id(fb_data['id'], fb_data)
-  session[:user_id] = user['_id']
-  redirect "/me"
-end
-
-get "/logout" do
-  session[:user_id] = {}
-  redirect "/me"
+  {token: user['token']}
 end
 
 puts "Ready to rock".light_red

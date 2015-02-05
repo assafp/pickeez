@@ -45,21 +45,23 @@ namespace '/photos' do
     {photos: photos}
   end
 
-  get '/:id' do
-    Photos.get(params[:id]) || 404
-  end 
+  # get '/:id' do
+  #   Photos.get(params[:id]) || 404
+  # end 
 
   post '/' do    
     ensure_params REQUIRED_PHOTO_FIELDS
+    halt(401, "No such album") unless $albums.exists?(params[:album_id])
     res = Photos.create(params)
     {id: res._id}
   end
 
-  post '/:id' do
-    ensure_params REQUIRED_PHOTO_FIELDS
-    res = Photos.update(params[:id], params) 
-    (res[:updatedExisting] && res[:_id]) ? {id: res[:_id]} : 404      
-  end
+  # post '/:id' do
+  #   ensure_params REQUIRED_PHOTO_FIELDS
+  #   halt(401, "Bad album ID - no such album") unless $albums.exists?(params[:album_id])
+  #   res = Photos.update(params[:id], params) 
+  #   (res[:updatedExisting] && res[:_id]) ? {id: res[:_id]} : 404      
+  # end
 
   post '/:id/set_filter' do     
     filter_type = {like: 'like', dislike: 'dislike'}[params[:type].to_sym] || 'none'

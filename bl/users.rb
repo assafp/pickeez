@@ -6,7 +6,7 @@ module Users
   extend self
 
   def create(params)
-    $users.add(params)  
+    $users.add(params.merge({token: SecureRandom.urlsafe_base64+SecureRandom.urlsafe_base64}))  
   end
 
   def get(id)
@@ -25,6 +25,10 @@ module Users
   def update(params)    
     fields = params.just(SETTABLE_USER_FIELDS)
     $users.update_id(params.user_id, fields)    
+  end
+
+  def create_test_users
+    $users.add({token: "1", fb_id: "1", name: "test_user_1"})  
   end
 
 end

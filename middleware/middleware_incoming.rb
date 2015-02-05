@@ -6,11 +6,9 @@ before do
   @client_id = ENV['PICKEEZ_FB_APP_ID']
   @client_secret = ENV['PICKEEZ_FB_APP_SECRET']
   
-  #helpers. move to other global place..   
+  @user = $users.find_one(token: params[:token]) 
   
-  # def authenticate!
-  #   halt(401, {msg: 'No user found. Please sign in.'}) unless cu
-  # end 
+  PUBLIC_ROUTES = ['/fb_enter']  
 
   def test?
     return false if $prod 
@@ -18,12 +16,19 @@ before do
     false
   end
 
-  def test_login
-    session[:user_id] ||= Users.get_or_create_by_fb_id('test')['_id'] if test?
+  # def test_login
+  #   @user ||= Users.get_or_create_by_fb_id('test')['_id'] if test?
+  # end
+  def public_route?
+    PUBLIC_ROUTES.include?(request.env['REQUEST_PATH'])
+  end
+
+  def stop_401
+    halt(401, {msg: 'No user found. Please supply token or sign in.'})
   end
 
   def cu#rrent_user
-    session && session['user_id']  
+    @user
   end
 
   def current_user 
@@ -34,6 +39,7 @@ before do
     required_params.each { |p| halt(400, {msg: "Missing parameter: #{p}"}) unless params[p] }
   end
 
-  test_login if test?
+  #test_login if test?
+  stop_401 unless @user || public_route?
 end
 

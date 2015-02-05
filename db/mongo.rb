@@ -62,4 +62,8 @@ class Mongo::Collection
 		{_id: _id}.merge(res).indiff
 	end
 
+	def exists?(val, field = :_id)
+		self.find({field.to_s => val}, {fields: [:_id]}).limit(1).count > 0
+	end
+
 end
