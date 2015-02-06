@@ -21,11 +21,11 @@ require_all './bl'
 require_all './middleware'
 
 get '/' do
-	{msg: "welcome to pickeez_rb_be. We recognize you as user_id #{cu}"}
+	{msg: "welcome to pickeez_rb_be"}
 end	
 
-post '/' do
-  'post ack'
+get '/routes' do
+  send_file 'README.md', :type => :txt
 end
 
 get '/raise404' do
@@ -38,35 +38,6 @@ end
 
 get '/halt' do
   halt(400, {a:1})
-end
-
-get "/fb" do
-  redirect "https://graph.facebook.com/oauth/authorize?client_id=#{@client_id}&redirect_uri=#{$root_url}/fb_enter"
-end
-
-get '/me' do
-  current_user
-end
-
-# get '/session' do
-#   session.to_h
-# end
-
-#app will probably call this endpoint with code. 
-get "/fb_enter" do
-  code = params[:code]
-  bp
-  endpoint = "https://graph.facebook.com/oauth/access_token?client_id=#{@client_id}&redirect_uri=#{$root_url}/fb_enter&client_secret=#{@client_secret}&code=#{code}"
-  response = HTTPClient.new.get endpoint
-  access_token = CGI.parse(response.body)["access_token"][0]
-  
-  #4. use auth-token to get user data
-  endpoint = "https://graph.facebook.com/me?access_token=#{access_token}"
-  response = HTTPClient.new.get endpoint
-  fb_data = JSON.parse(response.body)
-  
-  user = Users.get_or_create_by_fb_id(fb_data['id'], fb_data)
-  {token: user['token']}
 end
 
 puts "Ready to rock".light_red

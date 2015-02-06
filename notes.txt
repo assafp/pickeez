@@ -1,0 +1,39 @@
+Meeting with Amit
+-----------------
+Issues:
+
+Signup
+- signup and get token to represent user, not session
+- list of countries with area codes 
+- update user phone number + send verification code SMS
+- resend verification code 
+- verify verification code (and mark phone number as correct)
+
+All-Albums
+- get my albums 
+- delete album
+- create album
+- set album name 
+
+Invite
+- send SMS to users or push notification. 
+  - allow multiple sending, but not within the same hour 
+    - also send within another 24 hours if he did not respond 
+
+Album-Photos 
+- get album:
+  - photos (grouped by uploading user)
+- remove-user-from-album 
+  - remove all photos that he added
+- remove photo[s] from album
+  - only if owner or creator 
+
+- set album name 
+- invite (+share)
+- delete album
+
+User
+- approve notifications 
+- how_to -  
+- delete user (and all his photos and albums)
+- 

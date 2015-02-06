@@ -38,12 +38,12 @@ namespace '/photos' do
     {num: $photos.count, photos: $photos.all}
   end
 
-  get '/' do
-    crit = params.slice('album_id')
-    halt(401, {msg: 'Invalid params supplied.'}) unless crit['album_id']
-    photos = Photos.find_by(crit)
-    {photos: photos}
-  end
+  # get '/' do
+  #   crit = params.slice('album_id')
+  #   halt(401, {msg: 'Invalid params supplied.'}) unless crit['album_id']
+  #   photos = Photos.find_by(crit)
+  #   {photos: photos}
+  # end
 
   # get '/:id' do
   #   Photos.get(params[:id]) || 404
