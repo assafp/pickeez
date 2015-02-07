@@ -2,7 +2,7 @@ $photos = $mongo.collection('photos')
 
 SETTABLE_PHOTO_FIELDS = [:s3_path, :album_id, :inferred_data, 
                          :uploader_id, :name,
-                         :computed_filters, :removed_by, :added_by]
+                         :computed_filters, :removed_by, :owner_id]
 
 REQUIRED_PHOTO_FIELDS = [:s3_path, :album_id]
 
@@ -52,7 +52,9 @@ namespace '/photos' do
   post '/' do    
     ensure_params REQUIRED_PHOTO_FIELDS
     halt(401, "No such album") unless $albums.exists?(params[:album_id])
-    res = Photos.create(params)
+    data = params
+    data[:owner_id] = cuid
+    res = Photos.create(data)
     {_id: res._id}
   end
 

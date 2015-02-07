@@ -44,7 +44,7 @@ get '/users' do
 end
 
 post '/set_phone' do
-  res = Users.update({phone: params[:phone], phone_verification_code: 1000+rand(9000), id: cuid}) 
+  res = Users.update({phone: params[:phone], phone_verification_code: rand(1000..9000), id: cuid}) 
   #TODO: send actual SMS
   Users.get(cuid) || 404
 end

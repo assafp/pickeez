@@ -44,7 +44,7 @@ namespace '/albums' do
     albums = $albums.find_all({owner_id: cuid}).to_a
     albums.each {|al| 
       Albums.add_photos_data(al,cuid) 
-      al['owner'] = $users.find({_id: al['owner_id']}, {fields: ['name']}).first
+      al['owner'] = $users.find({_id: al['owner_id']}, {fields: ['name', 'pic_url']}).first
     }
 
     {albums: albums}
