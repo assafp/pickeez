@@ -53,9 +53,13 @@ namespace '/albums' do
   get '/:id' do
     album = Albums.get(params[:id]) 
     return 404 unless album
+    Albums.add_photos_data(album,cu)
+
     album_photos        = $photos.find({album_id: album['_id']}).to_a    
     album[:photos_list] = album_photos
-    Albums.add_photos_data(album,cu)
+    #user_ids = (album['invited_phones'] || []).push(album['owner_id'])
+    #album[:users] = users
+    
     album
   end 
 
@@ -70,6 +74,16 @@ namespace '/albums' do
     res = Albums.update(params[:id], params) 
     Albums.get(params[:id]) || 404
     #(res[:updatedExisting] && res[:_id]) ? {id: res[:_id]} : 404      
+  end
+
+  post '/:id/invite_phones' do 
+    album = Albums.get(params[:id])
+    album_id = album['_id']
+    invited_phones = params['phones']
+    halt(401, 'not album owner') unless cuid == album['owner_id']
+    $albums.update({_id: album_id}, {'$addToSet': {invited_phones: {'$each': invited_phones } } })
+    #TODO: send SMSs and push notifications 
+    {invited_phones: invited_phones}
   end
 
 end

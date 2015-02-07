@@ -27,16 +27,18 @@ Important routes, in expected chronological order of usage (HTTP GET unless othe
 
 > POST '/confirm_phone?code=3456' - marks phone number as confirmed if code is correct.    
 
+> POST "phones[]=555&phones[]=777" '/albums/123/invite_phones' - invites phones 555 and 777 to album 123. 
+
 TBD:
 
 > Send SMS with code upon entering phone and when requesting resend. 
-> 
+> Send SMS/push notif when inviting user to album
 
 > when returning single album, include list of users. for each user:
             - id, name, thumbnailUrl, list of photos, for each photo
                                                         - url, id, camera_roll_id, is_algo_filtered (for requesting user), is_liked (for requesting user)
 > delete album (by creator)
-> invite users to album
+
 > remove user from album 
 > log out
 > delete user? 
