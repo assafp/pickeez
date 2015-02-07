@@ -28,6 +28,10 @@ class Mongo::Collection
 	alias_method :find_by, :find_one
   alias_method :get, :find_one
 
+  def project(params, fields = [])
+  	find(params, {fields: fields}).first
+  end
+
 	def find_all(params = {})
 		self.find(params).to_a
 	end

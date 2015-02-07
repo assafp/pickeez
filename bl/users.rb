@@ -16,6 +16,10 @@ module Users
     $users.get(id)
   end
 
+  def basic_data(field, val)
+    $users.project({field.to_s => val}, ['fb_id','name','pic_url'])
+  end
+
   def get_or_create_by_fb_id(fb_id, fb_data = {})
     fb_id = fb_id.to_s
     $users.get({fb_id: fb_id}) || create({fb_id: fb_id, fb_data: fb_data})

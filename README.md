@@ -2,7 +2,7 @@ Welcome to pickeez backend for managing Pickeez data.
 
 Important routes, in expected chronological order of usage (HTTP GET unless otherwise specified):
 
-> '/fb' - will redirect you (in browser) to approve app (temporary app).
+> '/fb' - will redirect you (in browser) to approve app (temporary app. ID: 311069229089167).
 
 > '/fb_enter?code=abcd...' 
   - hit this route with the code after app-aproval on FB
@@ -19,7 +19,7 @@ Important routes, in expected chronological order of usage (HTTP GET unless othe
 
 > POST '/photos/' - add a photo. Required params are 's3_path' and a valid album_id.
 
-> '/albums/123' - gets album with its photos. 
+> '/albums/123' - gets album with its photos, grouped by users.  
 
 > POST '/set_phone?phone=4567' - sets phone number of requesting user to 4567. (Does not yet send SMS.)
 
@@ -34,9 +34,6 @@ TBD:
 > Send SMS with code upon entering phone and when requesting resend. 
 > Send SMS/push notif when inviting user to album
 
-> when returning single album, include list of users. for each user:
-            - id, name, thumbnailUrl, list of photos, for each photo
-                                                        - url, id, camera_roll_id, is_algo_filtered (for requesting user), is_liked (for requesting user)
 > delete album (by creator)
 
 > remove user from album 

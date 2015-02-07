@@ -25,12 +25,13 @@ module Albums
     $albums.get(id)
   end
 
-  def add_photos_data(al,cuid)
+  def add_photos_data(al,uid)
     id = al['_id']
+    bp
     al[:num_photos] = $photos.find({album_id: id}).count 
     #al[:num_liked_or_computed] = $photos.find({:$and => [{album_id: al['_id']}, {:$or => [{"filters.#{cu}" => 'like'}, ] }]}).count
-    al[:num_computed] = $photos.find({album_id: id, computed_filters: "#{cuid}"}).count 
-    al[:num_liked] = $photos.find({album_id: id, "filters.#{cuid}" => 'like'}).count 
+    al[:num_computed] = $photos.find({album_id: id, computed_filters: "#{uid}"}).count 
+    al[:num_liked] = $photos.find({album_id: id, "filters.#{uid}" => 'like'}).count 
   end 
 end
 
@@ -52,14 +53,18 @@ namespace '/albums' do
 
   get '/:id' do
     album = Albums.get(params[:id]) 
-    return 404 unless album
-    Albums.add_photos_data(album,cu)
+    return 404 unless album    
+    Albums.add_photos_data(album,cuid)
 
     album_photos        = $photos.find({album_id: album['_id']}).to_a    
-    album[:photos_list] = album_photos
-    #user_ids = (album['invited_phones'] || []).push(album['owner_id'])
-    #album[:users] = users
+    #album[:photos_list] = album_photos
+
+    users = album['invited_phones'].map {|phone| Users.basic_data(:phone, phone) }
+    users.push(Users.basic_data(:_id, album['owner_id']))
+    users.compact! 
     
+    users.each {|user| user[:photos] = album_photos.select {|p| p['owner_id'] == user['_id'] } }
+    album[:users] = users    
     album
   end 
 

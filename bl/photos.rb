@@ -65,15 +65,17 @@ namespace '/photos' do
   #   (res[:updatedExisting] && res[:_id]) ? {id: res[:_id]} : 404      
   # end
 
+  #curl -d "type=like" localhost:8002/photos/9253/set_filter
   post '/:id/set_filter' do     
     filter_type = {like: 'like', dislike: 'dislike'}[params[:type].to_sym] || 'none'
-    $photos.update_id(params[:id], { "filters.#{cu}" => filter_type } )
+    $photos.update_id(params[:id], { "filters.#{cuid}" => filter_type } )
     {msg: "ok"}
   end
 
+  #curl -d "action=push" localhost:8002/photos/4128/set_computed
   post '/:id/set_computed' do     
     action = params[:action] == 'push' ? '$addToSet' : '$pull'
-    $photos.update({_id: params[:id]}, { action => {computed_filters: cu } })
+    $photos.update({_id: params[:id]}, { action => {computed_filters: cuid } })
     {msg: "ok"}
   end
 
