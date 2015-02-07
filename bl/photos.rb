@@ -53,7 +53,7 @@ namespace '/photos' do
     ensure_params REQUIRED_PHOTO_FIELDS
     halt(401, "No such album") unless $albums.exists?(params[:album_id])
     res = Photos.create(params)
-    {id: res._id}
+    {_id: res._id}
   end
 
   # post '/:id' do

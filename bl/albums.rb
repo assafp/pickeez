@@ -42,7 +42,10 @@ namespace '/albums' do
 
   get '/mine' do  
     albums = $albums.find_all({owner_id: cuid}).to_a
-    albums.each {|al| Albums.add_photos_data(al,cuid) }
+    albums.each {|al| 
+      Albums.add_photos_data(al,cuid) 
+      al['owner'] = $users.find({_id: al['owner_id']}, {fields: ['name']}).first
+    }
 
     {albums: albums}
   end
@@ -59,7 +62,7 @@ namespace '/albums' do
   #create
   post '/' do
     res = Albums.create(params.merge!({owner_id: cuid}))
-    {id: res[:_id]}
+    {_id: res[:_id]}
   end
 
   #update

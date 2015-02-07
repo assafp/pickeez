@@ -31,7 +31,7 @@ TBD:
 
 > Send SMS with code upon entering phone and when requesting resend. 
 
-> when returning list of albums, include creator (id, name, thumbnailUrl)
+> when returning list of albums, include for each album creator (id, name, thumbnailUrl)
 > when returning single album, include list of users. for each user:
             - id, name, thumbnailUrl, list of photos, for each photo
                                                         - url, id, camera_roll_id, is_algo_filtered (for requesting user), is_liked (for requesting user)
