@@ -38,7 +38,7 @@ before do
     required_params.each { |p| halt(400, {msg: "Missing parameter: #{p}"}) unless params[p] }
   end
 
-  params[:token] = 1 if test?
+  params[:token] = "2" if test?
   @user = $users.find_one(token: params[:token]) 
   stop_401 unless (params[:token] && @user) || public_route?
 end

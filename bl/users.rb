@@ -1,6 +1,9 @@
 $users = $mongo.collection('users')
 
-SETTABLE_USER_FIELDS = [:name, :desc, :img, :phone, :email, :fb_page, :website,]
+SETTABLE_USER_FIELDS = [:name, :desc, :img, :phone, 
+                :email, :fb_page, :website, :updated_at,
+                :phone_verification_code, :verified_phone
+              ]
 
 module Users
   extend self
@@ -24,12 +27,13 @@ module Users
 
   def update(params)    
     fields = params.just(SETTABLE_USER_FIELDS)
-    $users.update_id(params.user_id, fields)    
+    $users.update_id(params[:id], fields)    
   end
 
   def create_test_users
     (0..10).each {|i|
-      $users.update({_id: i}, {_id: i, fb_id: i, token: i, name: "test_user_#{i}"}, {upsert: true})
+      i = i.to_s
+      $users.update({_id: i}, {_id: i, fb_id: i, token: i, name: "test_user_#{i}", created_at: Time.now}, {upsert: true})
     }
   end
 
@@ -37,6 +41,26 @@ end
 
 get '/users' do
   {num: $users.count, users: $users.all}
+end
+
+post '/set_phone' do
+  res = Users.update({phone: params[:phone], phone_verification_code: 1000+rand(9000), id: cuid}) 
+  #TODO: send actual SMS
+  Users.get(cuid) || 404
+end
+
+post '/resend_code_sms' do
+  {msg: 'not yet implemented.'}
+end
+
+post '/confirm_phone' do
+  if cu['phone_verification_code'].to_i == params['code'].to_i 
+    #TODO: send actual SMS 
+    Users.update({id: cuid, verified_phone: cu['phone']});
+    {ok: true}
+  else 
+    {err: 'wrong code'}
+  end
 end
 
 get "/fb" do
@@ -63,5 +87,5 @@ get "/fb_enter" do
   {token: user['token']}
 end
 
-Users.create_test_users
+#Users.create_test_users
 

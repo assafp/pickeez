@@ -23,7 +23,7 @@ class Mongo::Collection
 	def find_one(params, field = :_id)		
 		return self.find(params).first if params.is_a? Hash
 
-		find_one((field.to_s) => params.to_s)
+		find_one((field.to_s) => params)
 	end
 	alias_method :find_by, :find_one
   alias_method :get, :find_one
