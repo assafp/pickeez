@@ -15,6 +15,8 @@ Important routes, in expected chronological order of usage (HTTP GET unless othe
 
 > POST '/albums/123?name=donkey' - updates album 123 with params sent, such as 'name'. (Send post params in body request, of course.) 
 
+  > to delete album, supply parameter 'deleted=true' to this call. 
+
 > '/albums/mine' - returns list of albums belonging to requesting user. 
 
 > POST '/photos/' - add a photo. Required params are 's3_path' and a valid album_id.
@@ -27,16 +29,15 @@ Important routes, in expected chronological order of usage (HTTP GET unless othe
 
 > POST '/confirm_phone?code=3456' - marks phone number as confirmed if code is correct.    
 
-> POST "phones[]=555&phones[]=777" '/albums/123/invite_phones' - invites phones 555 and 777 to album 123. 
+> POST "phones[]=555&phones[]=777" '/albums/123/invite_phones' - invites phones 555 and 777 to album 123. Adding parameter "remove=true" *removes* each of these phones instead of adding them (which has the effect of deleting a user from album). If added later, their photos will be re-added. 
+
+> POST '/albums/123/delete' - deletes that album. (Actually only marks it as deleted so it won't be retrieved when calling list of albums). 
 
 TBD:
 
 > Send SMS with code upon entering phone and when requesting resend. 
 > Send SMS/push notif when inviting user to album
 
-> delete album (by creator)
-
-> remove user from album 
 > log out
 > delete user? 
 > change profile pic 
