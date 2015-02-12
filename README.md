@@ -33,11 +33,13 @@ Important routes, in expected chronological order of usage (HTTP GET unless othe
 
 > POST '/albums/123/delete' - deletes that album. (Actually only marks it as deleted so it won't be retrieved when calling list of albums). 
 
+> POST '/delete_me?sure=yes' - deletes this user and all albums he is the owner of. 
+
+> log out (client side only, remove token)
+
+> POST '/set_pic_url?pic_url=blabla' - set user pic url by 'pic_url' param.
+
 TBD:
 
 > Send SMS with code upon entering phone and when requesting resend. 
 > Send SMS/push notif when inviting user to album
-
-> log out
-> delete user? 
-> change profile pic 

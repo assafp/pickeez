@@ -39,7 +39,7 @@ module Albums
     album_photos        = $photos.find({album_id: album['_id']}).to_a    
     #album[:photos_list] = album_photos
 
-    users = album['invited_phones'].map {|phone| Users.basic_data(:phone, phone) }
+    users = album.fetch(['invited_phones'], {}).map {|phone| Users.basic_data(:phone, phone) }
     users.push(Users.basic_data(:_id, album['owner_id']))
     users.compact! 
     
@@ -74,7 +74,11 @@ namespace '/albums' do
 
   get '/mine' do      
     #albums = $albums.find_all({owner_id: cuid}).to_a
-    albums = $albums.find(:$and => [{owner_id: "2"}, {deleted: {'$ne' => 'true'}}]).to_a
+    verified_phone = cu['verified_phone'] || 'no-such-phone'
+    albums = $albums.find(:$and => [      
+      {:$or => [{owner_id: cuid}, {invited_phones: verified_phone}]},
+      {deleted: {'$ne' => 'true'}}
+      ]).to_a
 
     albums.each {|al| 
       Albums.add_photos_data(al,cuid) 
@@ -92,7 +96,7 @@ namespace '/albums' do
   end 
 
   #create
-  post '/' do
+  post '/create' do
     res = Albums.create(params.merge!({owner_id: cuid}))
     {_id: res[:_id]}
   end

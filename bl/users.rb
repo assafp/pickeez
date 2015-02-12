@@ -2,7 +2,7 @@ $users = $mongo.collection('users')
 
 SETTABLE_USER_FIELDS = [:name, :desc, :img, :phone, 
                 :email, :fb_page, :website, :updated_at,
-                :phone_verification_code, :verified_phone
+                :phone_verification_code, :verified_phone, :pic_url
               ]
 
 module Users
@@ -22,7 +22,8 @@ module Users
 
   def get_or_create_by_fb_id(fb_id, fb_data = {})
     fb_id = fb_id.to_s
-    $users.get({fb_id: fb_id}) || create({fb_id: fb_id, fb_data: fb_data})
+    pic_url = "http://graph.facebook.com/#{fb_id}/picture"
+    $users.get({fb_id: fb_id}) || create({fb_id: fb_id, pic_url: pic_url, fb_data: fb_data})
   end 
 
   def get_by_email(email)
@@ -37,7 +38,7 @@ module Users
   def create_test_users
     (0..10).each {|i|
       i = i.to_s
-      $users.update({_id: i}, {_id: i, fb_id: i, token: i, name: "test_user_#{i}", created_at: Time.now}, {upsert: true})
+      $users.update({_id: i}, {"$set" => {fb_id: i, token: i, name: "test_user_#{i}", created_at: Time.now}}, {upsert: true})
     }
   end
 
@@ -91,5 +92,19 @@ get "/fb_enter" do
   {token: user['token']}
 end
 
+post '/delete_me' do
+  if params['sure'] == 'yes' 
+    $albums.remove({owner_id: cuid})
+    $users.remove({_id: cuid}, {justOne: true})
+    {msg: 'removed'}
+  else 
+    {msg: 'please send "sure" parameter as "yes" if you are sure.'}
+  end
+end
+
+post '/set_pic_url' do
+  url = params['pic_url']
+  url ? $users.update_id(cuid, {pic_url: url}) : halt(404, 'no pic_url provided')
+end
 #Users.create_test_users
 
