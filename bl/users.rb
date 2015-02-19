@@ -89,7 +89,7 @@ get "/fb_enter" do
   fb_data = JSON.parse(response.body)
   
   user = Users.get_or_create_by_fb_id(fb_data['id'], fb_data)
-  {token: user['token']}
+  {token: user['token'], user: user}
 end
 
 post '/delete_me' do
