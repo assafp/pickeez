@@ -18,3 +18,4 @@ gem 'activesupport',      	'4.0.0' # utility functions like hash.slice
 gem 'require_all'
 gem 'httpclient',           '2.5.2'
 gem 'pony'                            # emails
+gem 'twilio-ruby'

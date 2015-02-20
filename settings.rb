@@ -6,6 +6,7 @@ set :show_exceptions, false
 #set :session_secret,  ENV['PICKEEZ_SESSION_SECRET']
 
 set :my_key,          'my_val' # settings.my_key == 'my_val
+set :twilio_auth_token,   ENV['TWILIO_AUTH_TOKEN']
 
 # The following are exposed globally via $varname.
 $app_name   = 'pickeez'

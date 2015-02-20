@@ -19,6 +19,7 @@ require './lib/mylib'
 require './settings'
 require './db/mongo'
 require_all './bl'
+require_all './comm'
 require_all './middleware'
 
 get '/' do
