@@ -90,9 +90,9 @@ get "/fb_enter_browser" do
   endpoint = "https://graph.facebook.com/me?access_token=#{access_token}"
   response = HTTPClient.new.get endpoint
   fb_data = JSON.parse(response.body)
-  
-  user = Users.get_or_create_by_fb_id(fb_data['id'], fb_data)
-  {token: user['token'], user: user}
+  fb_id = fb_data['id']
+  user = Users.get_or_create_by_fb_id(fb_id, fb_data)
+  {token: user['token'], fb_id: fb_id}
 end
 
 get '/fb_enter' do
@@ -101,8 +101,9 @@ get '/fb_enter' do
   response = HTTPClient.new.get endpoint
   fb_data = JSON.parse(response.body)
   fb_data['code'] = code
-  user = Users.get_or_create_by_fb_id(fb_data['id'], fb_data)
-  {token: user['token']}
+  fb_id = fb_data['id']
+  user = Users.get_or_create_by_fb_id(fb_id, fb_data)
+  {token: user['token'], fb_id: fb_id}
 end
 
 post '/delete_me' do
