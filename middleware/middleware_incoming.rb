@@ -6,7 +6,7 @@ before do
   @client_id = ENV['PICKEEZ_FB_APP_ID']
   @client_secret = ENV['PICKEEZ_FB_APP_SECRET']
   
-  PUBLIC_ROUTES = ['/fb', '/fb_enter', '/routes', '/']  
+  PUBLIC_ROUTES = ['/fb', '/fb_enter', '/fb_enter_browser', '/routes', '/']  
 
   def test?
     return false if $prod 
