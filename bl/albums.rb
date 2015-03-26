@@ -36,13 +36,18 @@ module Albums
     al[:total_filtered] = al[:num_computed] + al[:num_liked]
   end
 
+  def album_users(album)
+    users = album.fetch(['invited_phones'], {}).map {|phone| Users.basic_data(:phone, phone) }
+    users.push(Users.basic_data(:_id, album['owner_id']))
+    users.compact! 
+    users
+  end
+
   def add_photos_data(album,cuid) #for the app's view
     album_photos        = $photos.find({album_id: album['_id']}).to_a    
     #album[:photos_list] = album_photos
 
-    users = album.fetch(['invited_phones'], {}).map {|phone| Users.basic_data(:phone, phone) }
-    users.push(Users.basic_data(:_id, album['owner_id']))
-    users.compact! 
+    users = Albums.album_users(album)    
     
     album[:total_filtered] = 0
 
@@ -65,6 +70,9 @@ module Albums
     album[:users] = users    
   end
 
+  def mark_pending(id)
+    $pending_albums.update({album_id: id},{'$set' => {time_updated: Time.now}}, {upsert: true})
+  end
 end
 
 namespace '/albums' do
@@ -119,6 +127,14 @@ namespace '/albums' do
     Albums.get(id) || 404
   end
 
+  # curl -d "" "localhost:9292/albums/3573/done_uploading"
+  post '/:id/done_uploading' do    
+    halt(401, "No such album") unless $albums.exists?(params[:id])
+    $pending_albums.update({album_id: params[:id]},{'$set' => {done_uploading: "true"}}, {upsert: true})
+    {msg: "updated done uploading"}
+  end
+
+  #curl -d "phones[]=052444" localhost:9292/albums/3573/invite_phones
   post '/:id/invite_phones' do 
     album = Albums.get(params[:id])
     album_id = album['_id']
@@ -139,15 +155,18 @@ namespace '/albums' do
   # // algo part
 
   get '/algo/get_pending' do
-    album = $pending_albums.find_one({done_uploading: true}) #TODO: add 'or past 60 seconds' 
-    if true #album
-      pending_id = "3573" #album['_id']
-      $pending_albums.remove({_id: pending_id})  
-
+    pending_album = $pending_albums.find_one({done_uploading: "true"}) #TODO: add 'or past 60 seconds' 
+    pending_album = {'_id' => "3573"} if (testing = false)
+    if pending_album
+      pending_id = pending_album['album_id']
+      #$pending_albums.remove({_id: pending_id})  
+      bp
       album  = Albums.get(pending_id)
+      users  = album.fetch(['invited_phones'], {}).map {|phone| Users.basic_data(:phone, phone) }
       photos = $photos.find_all({album_id: pending_id}).map { |p| p.just(:_id, :s3_path, :computed_filters, :filters ) }
       {album_id: pending_id,
        album: album,
+       users: Albums.album_users(album),
        photos: photos
       }
     else 

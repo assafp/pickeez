@@ -8,7 +8,6 @@ auth_token = settings.twilio_auth_token
 TWILIO_CLIENT ||= Twilio::REST::Client.new account_sid, auth_token 
 
 def send_sms(to, body = nil)
-  bp
   body ||= "test msg"
   TWILIO_CLIENT.account.messages.create({
     from: '+18442762975',  

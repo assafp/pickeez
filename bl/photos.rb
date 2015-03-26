@@ -49,12 +49,14 @@ namespace '/photos' do
     Photos.get(params[:id]) || 404
   end 
 
+  # curl -d "s3_path=456&album_id=3573" localhost:9292/photos/
   post '/' do    
     ensure_params REQUIRED_PHOTO_FIELDS
     halt(401, "No such album") unless $albums.exists?(params[:album_id])
     data = params
     data[:owner_id] = cuid
     res = Photos.create(data)
+    Albums.mark_pending(params[:album_id])
     {_id: res._id}
   end
 
@@ -65,7 +67,7 @@ namespace '/photos' do
   #   (res[:updatedExisting] && res[:_id]) ? {id: res[:_id]} : 404      
   # end
 
-  #curl -d "type=like" localhost:8002/photos/9253/set_filter
+  #curl -d "type=like" localhost:9292/photos/4128/set_filter
   post '/:id/set_filter' do     
     filter_type = {like: 'like', dislike: 'dislike'}[params[:type].to_sym] || 'none'
     $photos.update_id(params[:id], { "filters.#{cuid}" => filter_type } )

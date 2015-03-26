@@ -54,6 +54,7 @@ before do
   end
 
   params[:token] ||= "2" if test?
+  #params[:token] = "rguHquVQBokeGcOe84Z-wQtTbaO_yax6cdJKBPdD6UwQ"
   @user = $users.find_one(token: params[:token]) 
   stop_401 unless (params[:token] && @user) || public_route?
 end

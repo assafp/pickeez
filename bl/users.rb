@@ -17,7 +17,7 @@ module Users
   end
 
   def basic_data(field, val)
-    $users.project({field.to_s => val}, ['fb_id','name','pic_url'])
+    $users.project({field.to_s => val}, ['fb_id','name','pic_url','verified_phone'])
   end
 
   def get_or_create_by_fb_id(fb_id, fb_data = {})
@@ -48,6 +48,7 @@ get '/users' do
   {num: $users.count, users: $users.all}
 end
 
+#curl -d "phone=7788" localhost:9292/users/set_phone (also set token in incoming mw)
 post '/set_phone' do
   phone = params[:phone]
   code  = rand(1000..9000)
