@@ -45,9 +45,9 @@ namespace '/photos' do
   #   {photos: photos}
   # end
 
-  # get '/:id' do
-  #   Photos.get(params[:id]) || 404
-  # end 
+  get '/:id' do
+    Photos.get(params[:id]) || 404
+  end 
 
   post '/' do    
     ensure_params REQUIRED_PHOTO_FIELDS
@@ -73,10 +73,28 @@ namespace '/photos' do
   end
 
   #curl -d "action=push" localhost:8002/photos/4128/set_computed
-  post '/:id/set_computed' do     
-    action = params[:action] == 'push' ? '$addToSet' : '$pull'
-    $photos.update({_id: params[:id]}, { action => {computed_filters: cuid } })
-    {msg: "ok"}
+  # post '/:id/set_computed' do     
+  #   action = params[:action] == 'push' ? '$addToSet' : '$pull'
+  #   $photos.update({_id: params[:id]}, { action => {computed_filters: cuid } })
+  #   {msg: "ok"}
+  # end
+
+  # algo 
+
+  # curl -X POST -H "Content-Type: application/json" -d '{"photos": {"4128": {"2": true, "1": false }}}' "localhost:9292/photos/algo/set"
+  post '/algo/set' do
+    photos = params[:photos]
+    stop_401("No photos supplied.") unless photos    
+    photos.each {|photo_id, tuples|
+      #puts photo_id;
+      tuples.each { |user_id, flag| 
+        #puts "updating photo #{photo_id} for #{user_id}"
+        action = flag == true ? '$addToSet' : '$pull'
+        puts "running #{action} on #{user_id}"
+        $photos.update({_id: photo_id}, { action => {computed_filters: user_id } }) 
+      }       
+    }
+    'ok, set'
   end
 
 end

@@ -1,4 +1,5 @@
 $albums = $mongo.collection('albums')
+$pending_albums = $mongo.collection('pending_albums')
 
 SETTABLE_ALBUM_FIELDS = [:owner_id, :name, :accepted_members, 
                          :pending_members, :last_modified, :last_modifying_user,
@@ -35,7 +36,7 @@ module Albums
     al[:total_filtered] = al[:num_computed] + al[:num_liked]
   end
 
-  def add_photos_data(album,cuid)
+  def add_photos_data(album,cuid) #for the app's view
     album_photos        = $photos.find({album_id: album['_id']}).to_a    
     #album[:photos_list] = album_photos
 
@@ -134,5 +135,25 @@ namespace '/albums' do
     #TODO: send SMSs and push notifications? 
     {updated_album_phones: updated_album_phones}
   end  
+
+  # // algo part
+
+  get '/algo/get_pending' do
+    album = $pending_albums.find_one({done_uploading: true}) #TODO: add 'or past 60 seconds' 
+    if true #album
+      pending_id = "3573" #album['_id']
+      $pending_albums.remove({_id: pending_id})  
+
+      album  = Albums.get(pending_id)
+      photos = $photos.find_all({album_id: pending_id}).map { |p| p.just(:_id, :s3_path, :computed_filters, :filters ) }
+      {album_id: pending_id,
+       album: album,
+       photos: photos
+      }
+    else 
+      {msg: 'empty'}
+    end
+  end
+
 end
 

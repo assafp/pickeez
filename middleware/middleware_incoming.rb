@@ -2,6 +2,25 @@ use Rack::Parser, :content_types => {
   'application/json'  => Proc.new { |body| ::MultiJson.decode body }
 }
 
+helpers do 
+  def foo #global
+    'bar'
+  end
+
+  def stop_401(msg = nil)
+    stop(401, msg || {msg: 'No user found. Please supply token or sign in.'})
+  end
+
+  def stop(status, msg)
+    halt(status, msg)
+  end
+end
+
+before '*/algo/*' do
+  return unless $prod
+  stop_401({msg: 'wrong password.'}) unless params[:password] == settings.algo_password
+end
+
 before do
   @client_id = ENV['PICKEEZ_FB_APP_ID']
   @client_secret = ENV['PICKEEZ_FB_APP_SECRET']
@@ -16,10 +35,6 @@ before do
 
   def public_route?
     PUBLIC_ROUTES.include?(request.env['REQUEST_PATH'])
-  end
-
-  def stop_401
-    halt(401, {msg: 'No user found. Please supply token or sign in.'})
   end
 
   def cu#rrent_user
