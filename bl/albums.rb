@@ -155,12 +155,13 @@ namespace '/albums' do
   # // algo part
 
   get '/algo/get_pending' do
-    pending_album = $pending_albums.find_one({done_uploading: "true"}) #TODO: add 'or past 60 seconds' 
+    pending_album   = $pending_albums.find_one({time_updated: { '$lt' => Time.now - 60}}) 
+    pending_album ||= $pending_albums.find_one({done_uploading: "true"}) 
     pending_album = {'_id' => "3573"} if (testing = false)
     if pending_album
       pending_id = pending_album['album_id']
-      #$pending_albums.remove({_id: pending_id})  
-      bp
+      $pending_albums.remove({album_id: pending_id})  
+
       album  = Albums.get(pending_id)
       users  = album.fetch(['invited_phones'], {}).map {|phone| Users.basic_data(:phone, phone) }
       photos = $photos.find_all({album_id: pending_id}).map { |p| p.just(:_id, :s3_path, :computed_filters, :filters ) }

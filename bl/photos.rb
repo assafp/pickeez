@@ -96,7 +96,7 @@ namespace '/photos' do
         $photos.update({_id: photo_id}, { action => {computed_filters: user_id } }) 
       }       
     }
-    'ok, set'
+    {msg: 'ok, set'}
   end
 
 end

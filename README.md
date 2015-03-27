@@ -39,6 +39,19 @@ Important routes, in expected chronological order of usage (HTTP GET unless othe
 
 > POST '/set_pic_url?pic_url=blabla' - set user pic url by 'pic_url' param.
 
+// new routes, March 2015:
+
+> POST /albums/3573/done_uploading
+
+// ALGO part (For Uri and Gidi)
+
+In all of the 'algo' routes, you must supply a URL param called 'password' with the correct value. (Ask Sella.)
+
+> POST 'photos/algo/set'
+  > curl -X POST -H "Content-Type: application/json" -d '{"photos": {"photo_id": {"user_id_1": true, "user_id_2": false }}}' "www.pickeezmetadata.com/photos/algo/set"
+
+> /albums/algo/get_pending - gets next pending album. 
+
 TBD:
 
 > Send SMS with code upon entering phone and when requesting resend. 
