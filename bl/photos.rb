@@ -87,8 +87,8 @@ namespace '/photos' do
   post '/algo/set' do
     photos = params[:photos]
     stop_401("No photos supplied.") unless photos    
-    i=0
-    log={}
+    i = 0
+    log = {}
     photos.each {|photo_id, tuples|
       #puts photo_id;
       tuples.each { |user_id, flag| 
