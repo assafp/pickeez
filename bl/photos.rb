@@ -87,16 +87,18 @@ namespace '/photos' do
   post '/algo/set' do
     photos = params[:photos]
     stop_401("No photos supplied.") unless photos    
+    i=0
+    log={}
     photos.each {|photo_id, tuples|
       #puts photo_id;
       tuples.each { |user_id, flag| 
         #puts "updating photo #{photo_id} for #{user_id}"
         action = flag == true ? '$addToSet' : '$pull'
-        puts "running #{action} on #{user_id}"
+        log[i+=1] = "#{action} on photo #{photo_id} and user #{user_id}"
         $photos.update({_id: photo_id}, { action => {computed_filters: user_id } }) 
       }       
     }
-    {msg: 'ok, set'}
+    {msg: 'ok, set', log: log}
   end
 
 end

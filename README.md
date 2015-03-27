@@ -45,10 +45,7 @@ Important routes, in expected chronological order of usage (HTTP GET unless othe
 
 // ALGO part (For Uri and Gidi)
 
-In all of the 'algo' routes, you must supply a URL param called 'password' with the correct value. (Ask Sella.)
-
-> POST 'photos/algo/set'
-  > curl -X POST -H "Content-Type: application/json" -d '{"photos": {"photo_id": {"user_id_1": true, "user_id_2": false }}}' "www.pickeezmetadata.com/photos/algo/set"
+IMPORTANT: In all of the 'algo' routes, you must supply a URL param called 'password' with the correct value. (Ask Sella.)
 
 > /albums/algo/get_pending - gets next pending album. 
 
@@ -73,6 +70,20 @@ Repeat all the steps and this time instead of waiting 60 seconds, call
 - $ curl www.pickeezmetadata.com/albums/algo/all_pending?password=PASSWORD - see album's state has changed to 'done uploading'
 - $ curl www.pickeezmetadata.com/albums/algo/get_pending?password=PASSWORD - gets the album
 - $ (call get_pending again) - nothing there now. 
+
+> POST 'photos/algo/set'
+  > curl -X POST -H "Content-Type: application/json" -d '{"photos": {"photo_id": {"user_id_1": true, "user_id_2": false }}}' "www.pickeezmetadata.com/photos/algo/set"
+
+Integration example:
+
+- create album (ALBUM_ID) and photo (PHOTO_ID) with your TOKEN.
+
+- curl www.pickeezmetadata.com/albums/ALBUM_ID - make sure your photo is in the album
+- curl -X POST -H "Content-Type: application/json" -d '{"photos": {"PHOTO_ID": {"USER_ID": true }}}' "www.pickeezmetadata.com/photos/algo/set?password=PASSWORD"
+- curl www.pickeezmetadata.com/photos/PHOTO_ID to make sure the photo has the filters.
+- curl www.pickeezmetadata.com/albums/ALBUM_ID to make sure the album reflects the photo filters. 
+
+******
 
 TBD:
 
