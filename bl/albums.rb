@@ -147,6 +147,7 @@ namespace '/albums' do
       $albums.update({_id: album_id}, {'$addToSet' => {invited_phones: {'$each': invited_phones } } })
     end
 
+    Albums.mark_pending(params[:id])
     updated_album_phones = $albums.project({_id: album_id}, ['invited_phones'])['invited_phones']
     #TODO: send SMSs and push notifications? 
     {updated_album_phones: updated_album_phones}
