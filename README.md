@@ -52,6 +52,8 @@ In all of the 'algo' routes, you must supply a URL param called 'password' with 
 
 > /albums/algo/get_pending - gets next pending album. 
 
+> /algo/all_pending - debugging route, shows you list of pending albums (but does not update when taking one.)
+
 TBD:
 
 > Send SMS with code upon entering phone and when requesting resend. 

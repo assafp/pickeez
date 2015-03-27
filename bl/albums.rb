@@ -154,6 +154,11 @@ namespace '/albums' do
 
   # // algo part
 
+  get '/algo/all_pending' do
+    {pending_albums: $pending_albums.all,
+      msg: 'This is just a debugging route.'}
+  end
+
   get '/algo/get_pending' do
     pending_album   = $pending_albums.find_one({time_updated: { '$lt' => Time.now - 60}}) 
     pending_album ||= $pending_albums.find_one({done_uploading: "true"}) 
