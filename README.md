@@ -54,6 +54,26 @@ In all of the 'algo' routes, you must supply a URL param called 'password' with 
 
 > /algo/all_pending - debugging route, shows you list of pending albums (but does not update when taking one.)
 
+Integration example (if you are unfamiliar with cURL, LMK.)
+
+- Go to www.pickeezmetadata.com/fb (in browser) and get your user TOKEN. 
+- $ curl www.pickeezmetadata.com/albums/algo/all_pending?password=PASSWORD - no pending albums (debugging route)
+- $ curl www.pickeezmetadata.com/albums/algo/get_pending - empty
+- $ curl -d "token=TOKEN" www.pickeezmetadata.com/albums/create - get ALBUM_ID
+- $ curl -d "s3_path=123&album_id=ALBUM_ID&token=TOKEN" www.pickeezmetadata.com/photos/
+- $ curl www.pickeezmetadata.com/albums/algo/get_pending?password=PASSWORD - empty (60 seconds not passed, and not marked as done_uploading)
+- $ curl www.pickeezmetadata.com/albums/algo/all_pending?password=PASSWORD - see there is a pending album, but its time_updated is not old enough.
+- Now wait 60 seconds, and then call:
+  - $ curl www.pickeezmetadata.com/albums/algo/get_pending?password=PASSWORD - gets the album
+  - $ (call get_pending again) - nothing there now.
+
+Repeat all the steps and this time instead of waiting 60 seconds, call
+
+- $ curl -d "token=TOKEN" "www.pickeezmetadata.com/albums/ALBUM_ID/done_uploading"
+- $ curl www.pickeezmetadata.com/albums/algo/all_pending?password=PASSWORD - see album's state has changed to 'done uploading'
+- $ curl www.pickeezmetadata.com/albums/algo/get_pending?password=PASSWORD - gets the album
+- $ (call get_pending again) - nothing there now. 
+
 TBD:
 
 > Send SMS with code upon entering phone and when requesting resend. 
