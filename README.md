@@ -19,7 +19,7 @@ Important routes, in expected chronological order of usage (HTTP GET unless othe
 
 > '/albums/mine' - returns list of albums belonging to requesting user. 
 
-> POST '/photos/' - add a photo. Required params are 's3_path' and a valid album_id.
+> POST '/photos/' - add a photo. Required params are 's3_path' and a valid album_id. You may also send 's3_server_id'.
 
 > '/albums/123' - gets album with its photos, grouped by users.  
 
@@ -41,7 +41,11 @@ Important routes, in expected chronological order of usage (HTTP GET unless othe
 
 // new routes, March 2015:
 
-> POST /albums/3573/done_uploading
+> POST /albums/3573/done_uploading - to signify album is ready to be processed
+
+# curl -g "www.pickeezmetadata.com/users/which_phones_registered?phones[]=10&phones[]=20"
+> /users/which_phones_registered 
+
 
 // ALGO part (For Uri and Gidi)
 

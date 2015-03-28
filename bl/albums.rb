@@ -101,6 +101,7 @@ namespace '/albums' do
     album = Albums.get(params[:id]) 
     return 404 unless album    
     Albums.add_photos_data(album,cuid)
+    album['owner_name'] = (($users.find_one(album['owner_id']) || {})['fb_data'] || {})['name']
     album
   end 
 

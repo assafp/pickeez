@@ -121,5 +121,16 @@ post '/set_pic_url' do
   url = params['pic_url']
   url ? $users.update_id(cuid, {pic_url: url}) : halt(404, 'no pic_url provided')
 end
+
+get '/users/which_phones_registered' do
+  phones = params['phones'] || []
+  res = {}; 
+  phones.each { |phone| 
+    user = $users.project({phone: phone}, [:_id]) || {}; 
+    res[phone] = user['_id'] 
+  }
+  res
+end
+
 #Users.create_test_users
 
