@@ -162,6 +162,9 @@ namespace '/albums' do
   end
 
   get '/algo/get_pending' do
+    begin
+    
+    default_res = { status: 'empty', msg: 'empty' }
     pending_album   = $pending_albums.find_one({time_updated: { '$lt' => Time.now - 60}}) 
     pending_album ||= $pending_albums.find_one({done_uploading: "true"}) 
     pending_album = {'_id' => "3573"} if (testing = false)
@@ -172,13 +175,18 @@ namespace '/albums' do
       album  = Albums.get(pending_id)
       users  = album.fetch(['invited_phones'], {}).map {|phone| Users.basic_data(:phone, phone) }
       photos = $photos.find_all({album_id: pending_id}).map { |p| p.just(:_id, :s3_path, :computed_filters, :filters ) }
-      {album_id: pending_id,
+      {status: 'ok',
+       album_id: pending_id,
        album: album,
        users: Albums.album_users(album),
        photos: photos
       }
     else 
-      {msg: 'empty'}
+      default_res
+    end
+    rescue => e
+      $pending_albums.remove({album_id: pending_id}) if pending_id
+      default_res.merge({error: e})
     end
   end
 

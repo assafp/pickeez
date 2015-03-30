@@ -45,7 +45,7 @@ Important routes, in expected chronological order of usage (HTTP GET unless othe
 
 # curl -g "www.pickeezmetadata.com/users/which_phones_registered?phones[]=10&phones[]=20"
 > /users/which_phones_registered 
-
+  > usage example: GET www.pickeezmetadata.com/users/which_phones_registered?phones[]=972522934321&phones[]=20&token=TOKEN
 
 // ALGO part (For Uri and Gidi)
 
