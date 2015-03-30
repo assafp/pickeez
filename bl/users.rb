@@ -109,7 +109,8 @@ end
 
 post '/delete_me' do
   if params['sure'] == 'yes' 
-    $albums.remove({owner_id: cuid})
+    Albums.delete_pending_by_user(cuid)    
+    $albums.remove({owner_id: cuid})    
     $users.remove({_id: cuid}, {justOne: true})
     {msg: 'removed'}
   else 

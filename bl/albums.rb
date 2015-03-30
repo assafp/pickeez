@@ -73,6 +73,12 @@ module Albums
   def mark_pending(id)
     $pending_albums.update({album_id: id},{'$set' => {time_updated: Time.now}}, {upsert: true})
   end
+
+  def delete_pending_by_user(user_id)
+    user_album_ids = $albums.find({owner_id: user_id}).to_a.map {|a| a['_id']}
+    user_album_ids.each {|album_id| $pending_albums.remove({album_id: album_id}) }
+  end
+
 end
 
 namespace '/albums' do
