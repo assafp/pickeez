@@ -180,7 +180,7 @@ namespace '/albums' do
 
       album  = Albums.get(pending_id)
       users  = album.fetch(['invited_phones'], {}).map {|phone| Users.basic_data(:phone, phone) }
-      photos = $photos.find_all({album_id: pending_id}).map { |p| p.just(:_id, :s3_path, :computed_filters, :filters ) }
+      photos = $photos.find_all({album_id: pending_id}).map { |p| p.just(:_id, :s3_path, :computed_filters, :filters, :num_faces) }
       {status: 'ok',
        album_id: pending_id,
        album: album,
