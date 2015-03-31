@@ -43,6 +43,10 @@ Important routes, in expected chronological order of usage (HTTP GET unless othe
 
 > POST /albums/3573/done_uploading - to signify album is ready to be processed
 
+> POST "type=like" /photos/7762/set_filter  (or "type=dislike")
+
+> POST /photos/7762/delete - remove photo
+
 # curl -g "www.pickeezmetadata.com/users/which_phones_registered?phones[]=10&phones[]=20"
 > /users/which_phones_registered 
   > usage example: GET www.pickeezmetadata.com/users/which_phones_registered?phones[]=972522934321&phones[]=20&token=TOKEN

@@ -74,6 +74,13 @@ namespace '/photos' do
     {msg: "ok"}
   end
 
+  post '/:id/delete' do
+    photo = $photos.get(params[:id])
+    halt(401, "You can't delete that photo.") unless photo['owner_id'] == cuid
+    $photos.remove({_id: params[:id]})
+    {msg: 'ok', removed_photo: photo}
+  end
+  
   #curl -d "action=push" localhost:8002/photos/4128/set_computed
   # post '/:id/set_computed' do     
   #   action = params[:action] == 'push' ? '$addToSet' : '$pull'
