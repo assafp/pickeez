@@ -57,12 +57,23 @@ module Albums
         if p.fetch('filters',{})[cuid] == 'like'
           p['manually_filtered'] = true 
           album[:total_filtered] += 1        
-        elsif p.fetch('filters',{})[cuid] == 'dislike'
+        else 
+          p['manually_filtered'] = false
+        end
+
+        if p.fetch('filters',{})[cuid] == 'dislike'
           p['manually_unfiltered'] = true 
-        elsif p.fetch('computed_filters',[]).include? cuid
+        else 
+          p['manually_unfiltered'] = false
+        end
+
+        if p.fetch('computed_filters',[]).include? cuid
           p['computed'] = true 
           album[:total_filtered] += 1
+        else 
+          p['computed'] = false
         end
+        
         p.delete('computed_filters')
         p.delete('filters')
       }
