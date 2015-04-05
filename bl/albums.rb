@@ -37,7 +37,7 @@ module Albums
   end
 
   def album_users(album)
-    users = album.fetch(['invited_phones'], {}).map {|phone| Users.basic_data(:phone, phone) }
+    users = album.fetch('invited_phones', {}).map {|phone| Users.basic_data(:phone, phone) }
     users.push(Users.basic_data(:_id, album['owner_id']))
     users.compact! 
     users
