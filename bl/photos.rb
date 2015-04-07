@@ -81,6 +81,13 @@ namespace '/photos' do
     {msg: 'ok', removed_photo: photo}
   end
   
+  # curl -X POST -H "Content-Type: application/json" -d '{"rectangles": [{"top": 1, "bottom": 2, "left": 3, "right": 4}, {"top": 5, "bottom": 6, "left": 7, "right": 8} ] }' "localhost:9292/photos/4092/set_rectangles"
+  post '/:id/set_rectangles' do 
+    rectangles = params['rectangles'].map {|rect| rect.just('top', 'bottom', 'left', 'right')}
+    res = $photos.update_id(params[:id], { "rectangles" => rectangles } )
+    ok_or_404(res['updatedExisting'])
+  end
+
   #curl -d "action=push" localhost:8002/photos/4128/set_computed
   # post '/:id/set_computed' do     
   #   action = params[:action] == 'push' ? '$addToSet' : '$pull'

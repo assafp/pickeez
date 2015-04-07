@@ -14,6 +14,10 @@ helpers do
   def stop(status, msg)
     halt(status, msg)
   end
+
+  def ok_or_404(item = nil, ok_msg = {msg: 'ok'})
+    item ? ok_msg : stop(404, 'Non-existing.')
+  end
 end
 
 before '*/algo/*' do
