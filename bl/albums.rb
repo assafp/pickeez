@@ -37,10 +37,16 @@ module Albums
   end
 
   def album_users(album)
-    users = album.fetch('invited_phones', {}).map {|phone| Users.basic_data(:phone, phone) }
+    users = album.fetch(['invited_phones'], []).map {|phone| Users.basic_data(:phone, phone) }
     users.push(Users.basic_data(:_id, album['owner_id']))
     users.compact! 
     users
+  end
+
+  def invited_phones_without_users(album) 
+    phones = album.fetch(['invited_phones'], [])
+    bp
+    x=1
   end
 
   def add_photos_data(album,cuid) #for the app's view
@@ -78,6 +84,8 @@ module Albums
         p.delete('filters')
       }
     }
+
+    album[:invited_phones_without_users] = Albums.invited_phones_without_users(album)
     album[:users] = users    
   end
 
@@ -184,7 +192,8 @@ namespace '/albums' do
     default_res = { status: 'empty', msg: 'empty' }
     pending_album   = $pending_albums.find_one({time_updated: { '$lt' => Time.now - 60}}) 
     pending_album ||= $pending_albums.find_one({done_uploading: "true"}) 
-    pending_album = {'_id' => "3573"} if (testing = false)
+    testing = true 
+    pending_album = {'_id' => "3573"} if testing
     if pending_album
       pending_id = pending_album['album_id']
       $pending_albums.remove({album_id: pending_id})  
