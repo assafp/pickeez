@@ -37,23 +37,25 @@ module Albums
   end
 
   def album_users(album)
-    users = album.fetch(['invited_phones'], []).map {|phone| Users.basic_data(:phone, phone) }
-    users.push(Users.basic_data(:_id, album['owner_id']))
+    users = []
+    phones_without_users = []
+    album.fetch('invited_phones', []).each {|phone|       
+      user = Users.basic_data(:phone, phone) 
+      user ? users.push(user) : phones_without_users.push(phone)
+    }
+    owner = Users.basic_data(:_id, album['owner_id'])
+    owner[:is_owner] = true
+    users.push(owner)
     users.compact! 
-    users
-  end
-
-  def invited_phones_without_users(album) 
-    phones = album.fetch(['invited_phones'], [])
-    bp
-    x=1
+    {users: users, phones_without_users: phones_without_users}
   end
 
   def add_photos_data(album,cuid) #for the app's view
     album_photos        = $photos.find({album_id: album['_id']}).to_a    
     #album[:photos_list] = album_photos
-
-    users = Albums.album_users(album)    
+    album_users = Albums.album_users(album)
+    users = album_users[:users]
+    pending_phones = album_users[:phones_without_users]
     
     album[:total_filtered] = 0
 
@@ -85,7 +87,7 @@ module Albums
       }
     }
 
-    album[:invited_phones_without_users] = Albums.invited_phones_without_users(album)
+    album[:pending_phones] = pending_phones
     album[:users] = users    
   end
 
@@ -192,7 +194,7 @@ namespace '/albums' do
     default_res = { status: 'empty', msg: 'empty' }
     pending_album   = $pending_albums.find_one({time_updated: { '$lt' => Time.now - 60}}) 
     pending_album ||= $pending_albums.find_one({done_uploading: "true"}) 
-    testing = true 
+    testing = false
     pending_album = {'_id' => "3573"} if testing
     if pending_album
       pending_id = pending_album['album_id']
@@ -204,7 +206,7 @@ namespace '/albums' do
       {status: 'ok',
        album_id: pending_id,
        album: album,
-       users: Albums.album_users(album),
+       users: Albums.album_users(album)[:users],
        photos: photos
       }
     else 

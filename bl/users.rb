@@ -23,7 +23,8 @@ module Users
   def get_or_create_by_fb_id(fb_id, fb_data = {})
     fb_id = fb_id.to_s
     pic_url = "http://graph.facebook.com/#{fb_id}/picture"
-    $users.get({fb_id: fb_id}) || create({fb_id: fb_id, pic_url: pic_url, fb_data: fb_data})
+    name = fb_data['name']
+    $users.get({fb_id: fb_id}) || create({fb_id: fb_id, pic_url: pic_url, name: name, fb_data: fb_data})
   end 
 
   def get_by_email(email)
