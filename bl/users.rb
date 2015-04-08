@@ -2,7 +2,8 @@ $users = $mongo.collection('users')
 
 SETTABLE_USER_FIELDS = [:name, :desc, :img, :phone, 
                 :email, :fb_page, :website, :updated_at,
-                :phone_verification_code, :verified_phone, :pic_url
+                :phone_verification_code, :verified_phone, :pic_url,
+                :phone_8_digits
               ]
 
 module Users
