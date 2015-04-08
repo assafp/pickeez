@@ -41,7 +41,7 @@ module Albums
     phones_without_users = []
     album.fetch('invited_phones', []).each {|phone|       
       phone_8_digits = phone.to_s.split(//).last(8).join
-      user = Users.basic_data(:phone_8_digits, phone_8_digits) 
+      user = Users.basic_data(:verified_phone, phone) || Users.basic_data(:phone_8_digits, phone_8_digits)
       user ? users.push(user) : phones_without_users.push(phone)
     }
     owner = Users.basic_data(:_id, album['owner_id'])
@@ -127,7 +127,9 @@ namespace '/albums' do
 
   get '/:id' do
     album = Albums.get(params[:id]) 
-    return 404 unless album    
+    return 404 unless album
+    $albums.update({_id: params[:id]}, { '$addToSet' => {users_viewed: cuid } })
+
     Albums.add_photos_data(album,cuid)
     album['owner_name'] = (($users.find_one(album['owner_id']) || {})['fb_data'] || {})['name']
     album
