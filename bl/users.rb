@@ -73,7 +73,7 @@ post '/confirm_phone' do
 
   if (phone_verification_code == code) || force
     verified_phone = cu['phone']
-    phone_8_digits = verified_phone.to_s.split(//).last(5).join #we use last 8 digits so 972521234567 matches 21234567, so when people invite using local number it'll work out.
+    phone_8_digits = verified_phone.to_s.split(//).last(8).join #we use last 8 digits so 972521234567 matches 21234567, so when people invite using local number it'll work out.
     Users.update({id: cuid, verified_phone: verified_phone, phone_8_digits: phone_8_digits});
     {ok: true}
   else 
