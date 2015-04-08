@@ -40,7 +40,7 @@ module Albums
     users = []
     phones_without_users = []
     album.fetch('invited_phones', []).each {|phone|       
-      user = Users.basic_data(:phone, phone) 
+      user = Users.basic_data(:phone_8_digits, phone) 
       user ? users.push(user) : phones_without_users.push(phone)
     }
     owner = Users.basic_data(:_id, album['owner_id'])

@@ -48,11 +48,16 @@ Important routes, in expected chronological order of usage (HTTP GET unless othe
 > POST /photos/7762/delete - remove photo
 
 > POST /photos/4092/set_rectangles
-$ curl -X POST -H "Content-Type: application/json" -d '{"rectangles": [{"top": 1, "bottom": 2, "left": 3, "right": 4}, {"top": 5, "bottom": 6, "left": 7, "right": 8} ] }' "localhost:9292/photos/4092/set_rectangles"
+$ curl -X POST -H "Content-Type: application/json" -d '{"rectangles": [{"x": 1, "y": 2, "width": 3, "height": 4}, {"x": 5, "y": 6, "width": 7, "height": 8} ] }' "localhost:9292/photos/4092/set_rectangles"
 
 # curl -g "www.pickeezmetadata.com/users/which_phones_registered?phones[]=10&phones[]=20"
 > /users/which_phones_registered 
   > usage example: GET www.pickeezmetadata.com/users/which_phones_registered?phones[]=972522934321&phones[]=20&token=TOKEN
+
+# curl -d "field=send_push_notifs&val=false" localhost:9292/set_fields
+# curl -d "field=push_notif_token&val=123abc" localhost:9292/set_fields
+> /set_fields (to set push notification setting and token)
+
 
 // ALGO part (For Uri and Gidi)
 

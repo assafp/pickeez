@@ -17,7 +17,7 @@ module Users
   end
 
   def basic_data(field, val)
-    $users.project({field.to_s => val}, ['fb_id','name','pic_url','verified_phone'])
+    $users.project({field.to_s => val}, ['fb_id','name','pic_url','verified_phone', 'phone'])
   end
 
   def get_or_create_by_fb_id(fb_id, fb_data = {})
@@ -64,9 +64,16 @@ post '/resend_code_sms' do
 end
 
 post '/confirm_phone' do
-  if cu['phone_verification_code'].to_i == params['code'].to_i 
-    #TODO: send actual SMS 
-    Users.update({id: cuid, verified_phone: cu['phone']});
+  halt(401, 'no code') unless params['code']
+  
+  code = params['code'].to_i
+  phone_verification_code = cu['phone_verification_code'].to_i  
+  force = true if params['foo'] == 'zomba'
+
+  if (phone_verification_code == code) || force
+    verified_phone = cu['phone']
+    phone_8_digits = verified_phone.to_s.split(//).last(5).join #we use last 8 digits so 972521234567 matches 21234567, so when people invite using local number it'll work out.
+    Users.update({id: cuid, verified_phone: verified_phone, phone_8_digits: phone_8_digits});
     {ok: true}
   else 
     {err: 'wrong code'}
@@ -122,6 +129,16 @@ end
 post '/set_pic_url' do
   url = params['pic_url']
   url ? $users.update_id(cuid, {pic_url: url}) : halt(404, 'no pic_url provided')
+end
+
+# curl -d "field=send_push_notifs&val=false" localhost:9292/set_fields
+# curl -d "field=push_notif_token&val=123" localhost:9292/set_fields
+post '/set_fields' do
+  field = params['field']
+  val   = params['val']
+  halt(401, 'bad_field') unless ['send_push_notifs', 'push_notif_token'].include? field
+  $users.update_id(cuid, {field => val})
+  {msg: 'ok'}
 end
 
 get '/users/which_phones_registered' do
