@@ -170,7 +170,9 @@ namespace '/albums' do
     album = Albums.get(params[:id])
     album_id = album['_id']
     invited_phones = params['phones'] || []
-    halt(401, 'not album owner') unless cuid == album['owner_id']
+    removing_my_phone = (invited_phones.size == 1) && (invited_phones[0] == cu['verified_phone']) && params['remove']
+
+    halt(401, 'not album owner') unless (cuid == album['owner_id']) || removing_my_phone
     
     if params['remove'] 
       $albums.update({_id: album_id}, {'$pullAll' => {invited_phones: invited_phones  } })
