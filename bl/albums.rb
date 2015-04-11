@@ -112,8 +112,10 @@ namespace '/albums' do
   get '/mine' do      
     #albums = $albums.find_all({owner_id: cuid}).to_a
     verified_phone = cu['verified_phone'] || 'no-such-phone'
+    phone_8_digits = cu['phone_8_digits'] || 'no_8_digit_phone'
+    
     albums = $albums.find(:$and => [      
-      {:$or => [{owner_id: cuid}, {invited_phones: verified_phone}]},
+      {:$or => [{owner_id: cuid}, {invited_phones: {'$in' => [verified_phone,phone_8_digits]}}]},
       {deleted: {'$ne' => 'true'}}
       ]).to_a
 
