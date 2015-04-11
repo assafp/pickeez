@@ -176,6 +176,8 @@ namespace '/albums' do
 
     halt(401, 'not album owner') unless (cuid == album['owner_id']) || removing_my_phone
     
+    invited_phones = invited_phones.map {|phone| phone.to_s.split(//).last(8).join }
+
     if params['remove'] 
       $albums.update({_id: album_id}, {'$pullAll' => {invited_phones: invited_phones  } })
     else 
