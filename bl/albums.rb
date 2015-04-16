@@ -96,9 +96,21 @@ module Albums
     $pending_albums.update({album_id: id},{'$set' => {time_updated: Time.now}}, {upsert: true})
   end
 
+  def mark_user_albums_as_pending(phone_8_digits)
+    albums = Albums.mine_by_phone([phone_8_digits])
+    albums.each {|x| }
+  end
+
   def delete_pending_by_user(user_id)
     user_album_ids = $albums.find({owner_id: user_id}).to_a.map {|a| a['_id']}
     user_album_ids.each {|album_id| $pending_albums.remove({album_id: album_id}) }
+  end
+
+  def mine_by_phone(phones_arr, owner_id = 123)
+    $albums.find(:$and => [      
+      {:$or => [{owner_id: owner_id}, {invited_phones: {'$in' => phones_arr}}]},
+      {deleted: {'$ne' => 'true'}}
+      ]).to_a
   end
 
 end
@@ -114,10 +126,7 @@ namespace '/albums' do
     verified_phone = cu['verified_phone'] || 'no-such-phone'
     phone_8_digits = cu['phone_8_digits'] || 'no_8_digit_phone'
     
-    albums = $albums.find(:$and => [      
-      {:$or => [{owner_id: cuid}, {invited_phones: {'$in' => [verified_phone,phone_8_digits]}}]},
-      {deleted: {'$ne' => 'true'}}
-      ]).to_a
+    albums = Albums.mine_by_phone([verified_phone,phone_8_digits], cuid)
 
     albums.each {|al| 
       Albums.add_photos_data(al,cuid) 
@@ -167,7 +176,7 @@ namespace '/albums' do
     {msg: "updated done uploading"}
   end
 
-  #curl -d "phones[]=052444" localhost:9292/albums/3573/invite_phones
+  #curl -d "phones[]=052444" localhost:9292/albums/3134/invite_phones
   post '/:id/invite_phones' do 
     bp
     album = Albums.get(params[:id])

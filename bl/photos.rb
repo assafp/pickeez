@@ -56,7 +56,6 @@ namespace '/photos' do
     data = params
     data[:owner_id] = cuid
     res = Photos.create(data)
-    Albums.mark_pending(params[:album_id])
     {_id: res._id}
   end
 

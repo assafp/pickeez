@@ -1,5 +1,10 @@
 Meeting with Amit
 -----------------
+- mark as pending when user joined if already invited to albums
+- don't mark as pending... check other cases 
+
+
+
 Issues:
 
 Signup

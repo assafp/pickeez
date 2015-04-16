@@ -50,7 +50,7 @@ get '/users' do
   {num: $users.count, users: $users.all}
 end
 
-#curl -d "phone=7788" localhost:9292/users/set_phone (also set token in incoming mw)
+#curl -d "phone=972522934321" "localhost:9292/set_phone" #(also set token in incoming mw)
 post '/set_phone' do
   phone = params[:phone]
   code  = rand(1000..9000)
@@ -64,9 +64,9 @@ post '/resend_code_sms' do
   {msg: 'not yet implemented.'}
 end
 
+#curl -d "foo=zomba&phone=0522934321&code=foo&token=0_jUrwgi-xz0rh1QR5WUDQrkRVzOr3WBms3SsWjmF2Hg" "localhost:9292/confirm_phone"
 post '/confirm_phone' do
   halt(401, 'no code') unless params['code']
-  
   code = params['code'].to_i
   phone_verification_code = cu['phone_verification_code'].to_i  
   force = true if params['foo'] == 'zomba'
@@ -75,6 +75,7 @@ post '/confirm_phone' do
     verified_phone = cu['phone']
     phone_8_digits = verified_phone.to_s.split(//).last(8).join #we use last 8 digits so 972521234567 matches 21234567, so when people invite using local number it'll work out.
     Users.update({id: cuid, verified_phone: verified_phone, phone_8_digits: phone_8_digits});
+    Albums.mark_user_albums_as_pending(phone_8_digits)
     {ok: true}
   else 
     {err: 'wrong code'}
