@@ -38,7 +38,12 @@ end
 
 def nice_id
   # Unique, URL-able, dev-friendly. Try it yourself!
-	$prod ? rand(2**128).to_s(36)+"-"+rand(1000).to_s : rand(10000).to_s
+  return rand(10000).to_s unless $prod
+  timestamp   = DateTime.now.strftime("%y%m%d%k%M%S%L")[1..14].to_i.to_s(36)  
+  char        = (('a'..'z').to_a+('A'..'Z').to_a+('0'..'9').to_a)[rand(62)]
+  mod_1000    = format('%03d', rand(1000))
+  unique_id   = timestamp + char + mod_1000
+  unique_id
 end
 
 def bp

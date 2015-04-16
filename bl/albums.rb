@@ -178,7 +178,6 @@ namespace '/albums' do
 
   #curl -d "phones[]=052444" localhost:9292/albums/3134/invite_phones
   post '/:id/invite_phones' do 
-    bp
     album = Albums.get(params[:id])
     album_id = album['_id']
     invited_phones = params['phones'] || []
@@ -195,7 +194,6 @@ namespace '/albums' do
     end
 
     invited_phones.each do |phone_8_digits| 
-      bp
       invited_existing_user = Users.basic_data(:phone_8_digits, phone_8_digits)
       if invited_existing_user 
         Albums.mark_pending(params[:id])  
@@ -205,7 +203,7 @@ namespace '/albums' do
     
     updated_album_phones = $albums.project({_id: album_id}, ['invited_phones'])['invited_phones']
     #TODO: send SMSs and push notifications? 
-    {updated_album_phones: updated_album_phones}
+    {updated_album_phones: updated_album_phones, link_id: album_id}
   end  
 
   # // algo part
