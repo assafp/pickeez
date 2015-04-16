@@ -51,8 +51,9 @@ get '/invite_page' do
   cross_origin
   album_id = params[:album_id]
   album = $albums.get(album_id)
+  owner = $users.get(album['owner_id'])
   photos = $photos.find({album_id: album_id}).limit(10).to_a
-  {msg: "Hello!", album: album, photos: photos}
+  {msg: "Hello!", album: album, owner_name: owner['name'], photos: photos}
 end
 
 puts "Ready to rock".light_red
