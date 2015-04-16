@@ -85,7 +85,7 @@ post '/confirm_phone' do
 end
 
 get "/fb" do
-  redirect "https://graph.facebook.com/oauth/authorize?client_id=#{@client_id}&redirect_uri=#{$root_url}&scope=emails/fb_enter_browser"
+  redirect "https://graph.facebook.com/oauth/authorize?client_id=#{@client_id}&redirect_uri=#{$root_url}/fb_enter_browser&scope=email"
 end
 
 get '/me' do
@@ -95,7 +95,7 @@ end
 #browser endpoint
 get "/fb_enter_browser" do
   code = params[:code]
-  endpoint = "https://graph.facebook.com/oauth/access_token?client_id=#{@client_id}&redirect_uri=#{$root_url}/fb_enter_browser&client_secret=#{@client_secret}&code=#{code}&scope=emails"
+  endpoint = "https://graph.facebook.com/oauth/access_token?client_id=#{@client_id}&redirect_uri=#{$root_url}/fb_enter_browser&client_secret=#{@client_secret}&code=#{code}&scope=email"
   response = HTTPClient.new.get endpoint
   access_token = CGI.parse(response.body)["access_token"][0]
   
