@@ -19,3 +19,4 @@ gem 'require_all'
 gem 'httpclient',           '2.5.2'
 gem 'pony'                            # emails
 gem 'twilio-ruby'
+gem "sinatra-cross_origin", "~> 0.3.1"

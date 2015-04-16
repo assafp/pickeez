@@ -9,7 +9,7 @@ require 'securerandom'
 require "net/http"
 require "net/https"
 require "cgi"
-
+require 'sinatra/cross_origin'
 
 Bundler.require
 
@@ -26,6 +26,11 @@ get '/' do
 	{msg: "welcome to pickeez_rb_be"}
 end	
 
+get '/ping' do 
+  cross_origin
+  {msg: "pong from pickeez"}
+end
+
 get '/routes' do
   send_file 'README.md', :type => :txt
 end
@@ -40,6 +45,14 @@ end
 
 get '/halt' do
   halt(400, {a:1})
+end
+
+get '/invite_page' do
+  cross_origin
+  album_id = params[:album_id]
+  album = $albums.get(album_id)
+  photos = $photos.find({album_id: album_id}).limit(10).to_a
+  {msg: "Hello!", album: album, photos: photos}
 end
 
 puts "Ready to rock".light_red
