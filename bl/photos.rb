@@ -80,7 +80,7 @@ namespace '/photos' do
     {msg: 'ok', removed_photo: photo}
   end
   
-  # curl -X POST -H "Content-Type: application/json" -d '{"rectangles": [{"x": 1, "y": 2, "width": 3, "height": 4}, {"x": 5, "y": 6, "width": 7, "height": 8} ], "detected_faces_data": {"face": "yes", "eyes": "no"} }' "localhost:9292/photos/9432/set_faces_data"
+  # curl -X POST -H "Content-Type: application/json" -d '{"rectangles": [{"x": 1, "y": 2, "width": 3, "height": 4}, {"x": 5.1, "y": 6, "width": 7, "height": 8} ], "detected_faces_data": {"face": "yes", "eyes": "no"} }' "localhost:9292/photos/9432/set_faces_data"
   # verify by localhost:9292/photos/9432
   post '/:id/set_faces_data' do 
     rectangles = params['rectangles'].map {|rect| rect.just('x', 'y', 'width', 'height')}
