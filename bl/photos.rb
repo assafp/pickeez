@@ -83,10 +83,10 @@ namespace '/photos' do
   # curl -X POST -H "Content-Type: application/json" -d '{"rectangles": [{"x": 1, "y": 2, "width": 3, "height": 4}, {"x": 5.1, "y": 6, "width": 7, "height": 8} ], "detected_faces_data": {"face": "yes", "eyes": "no"} }' "localhost:9292/photos/9432/set_faces_data"
   # verify by localhost:9292/photos/9432
   post '/:id/set_faces_data' do 
-    rectangles = params['rectangles'].map {|rect| rect.just('x', 'y', 'width', 'height')}
+    #rectangles = params['rectangles'].map {|rect| rect.just('x', 'y', 'width', 'height')}
     detected_faces_data = params['detected_faces_data']
     $photos.update_id(params[:id], 
-        { "rectangles" => rectangles, "detected_data" => detected_faces_data } )
+        { "detected_data" => detected_faces_data } )
   end
 
   #curl -d "action=push" localhost:8002/photos/4128/set_computed
