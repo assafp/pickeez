@@ -50,10 +50,13 @@ end
 get '/invite_page' do
   cross_origin
   album_id = params[:album_id]
+  halt(400, "No album ID") unless album_id
+  
   album = $albums.get(album_id)
   owner = $users.get(album['owner_id'])
-  photos = $photos.find({album_id: album_id}).limit(10).to_a
-  {msg: "Hello!", album: album, owner_name: owner['name'], photos: photos}
+  photos = $photos.find({album_id: album_id}).limit(10).map {|p| {url: p['s3_path']} }.to_a
+  
+  {album_name: album['name'], owner_name: owner['name'], photos: photos}
 end
 
 puts "Ready to rock".light_red
