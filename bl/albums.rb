@@ -3,7 +3,7 @@ $pending_albums = $mongo.collection('pending_albums')
 
 SETTABLE_ALBUM_FIELDS = [:owner_id, :name, :accepted_members, 
                          :pending_members, :last_modified, :last_modifying_user,
-                         :deleted
+                         :deleted, :local_album_id
                          ]
 
 REQUIRED_ALBUM_FIELDS = [:owner_id]
