@@ -59,6 +59,12 @@ Important routes, in expected chronological order of usage (HTTP GET unless othe
 # curl -d "field=push_notif_token&val=123abc" localhost:9292/set_fields
 > /set_fields (to set push notification setting and token)
 
+// data for invite page:
+
+> /invite_page?album_id=ID -> returns a JSON with album data for invite page. 
+
+$.get('http://pickeezmetadata.com/invite_page?album_id=hvg23nsg49679',function(s) { console.log(s)})
+
 
 // ALGO part (For Uri and Gidi)
 
