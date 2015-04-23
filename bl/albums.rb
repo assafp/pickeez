@@ -138,9 +138,7 @@ namespace '/albums' do
 
   get '/:id' do
     album = Albums.get(params[:id]) 
-    return 404 unless album
-    $albums.update({_id: params[:id]}, { '$addToSet' => {users_viewed: cuid } })
-
+    return 404 unless album    
     Albums.add_photos_data(album,cuid)
     album['owner_name'] = (($users.find_one(album['owner_id']) || {})['fb_data'] || {})['name']
     album
@@ -206,11 +204,20 @@ namespace '/albums' do
     {updated_album_phones: updated_album_phones, link_id: album_id}
   end  
 
+  post '/:id/viewed' do
+    $albums.update({_id: params[:id]}, { '$addToSet' => {users_viewed: cuid } })
+    {msg: "ok"}
+  end
+
   # // algo part
 
   get '/algo/all_pending' do
     {pending_albums: $pending_albums.all,
       msg: 'This is just a debugging route.'}
+  end
+
+  post '/algo/remove_pending' do 
+    $pending_albums.remove
   end
 
   get '/algo/get_pending' do

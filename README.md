@@ -19,7 +19,7 @@ Important routes, in expected chronological order of usage (HTTP GET unless othe
 
 > '/albums/mine' - returns list of albums belonging to requesting user. 
 
-> POST '/photos/' - add a photo. Required params are 's3_path' and a valid album_id. You may also send 's3_server_id'.
+> POST '/photos/' - add a photo. Required params are 's3_path' and a valid album_id. You may also send 's3_server_id' and 'photo_local_id'.
 
 > '/albums/123' - gets album with its photos, grouped by users.  
 
@@ -32,6 +32,8 @@ Important routes, in expected chronological order of usage (HTTP GET unless othe
 > POST "phones[]=555&phones[]=777" '/albums/123/invite_phones' - invites phones 555 and 777 to album 123. Adding parameter "remove=true" *removes* each of these phones instead of adding them (which has the effect of deleting a user from album). If added later, their photos will be re-added. 
 
 > POST '/albums/123/delete' - deletes that album. (Actually only marks it as deleted so it won't be retrieved when calling list of albums). 
+
+> POST '/albums/123/viewed' - adds the sending user to list of users marked that have viewed this album.
 
 > POST '/delete_me?sure=yes' - deletes this user and all albums he is the owner of. 
 
@@ -71,6 +73,7 @@ $.get('http://pickeezmetadata.com/invite_page?album_id=hvg23nsg49679',function(s
 IMPORTANT: In all of the 'algo' routes, you must supply a URL param called 'password' with the correct value. (Ask Sella.)
 
 > /albums/algo/get_pending - gets next pending album. 
+> POST /albums/algo/remove_pending - removes list of pending albums. 
 
 > /algo/all_pending - debugging route, shows you list of pending albums (but does not update when taking one.)
 

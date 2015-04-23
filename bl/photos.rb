@@ -2,7 +2,7 @@ $photos = $mongo.collection('photos')
 
 SETTABLE_PHOTO_FIELDS = [:s3_path, :album_id, :inferred_data, 
                          :uploader_id, :name,
-                         :computed_filters, :removed_by, :owner_id, :s3_server_id, :num_faces]
+                         :computed_filters, :removed_by, :owner_id, :s3_server_id, :num_faces, :photo_local_id]
 
 REQUIRED_PHOTO_FIELDS = [:s3_path, :album_id]
 
@@ -17,7 +17,7 @@ module Photos
     $photos.find_one(params.slice('album_id', 's3_path')) || $photos.add(white_fields(params))
   end
 
-  def update(id, params)    
+  def update(id, params) 
     res = $photos.update_id(id, white_fields(params))    
   end
 
