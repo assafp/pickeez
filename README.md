@@ -25,7 +25,7 @@ Important routes, in expected chronological order of usage (HTTP GET unless othe
 
 > POST '/set_phone?phone=4567' - sets phone number of requesting user to 4567. (Does not yet send SMS.)
 
-> POST '/resend_code_sms' - resends the code as an sms. (Does not yet send SMS.)
+> POST '/resend_code_sms' - resends the code as an sms. 
 
 > POST '/confirm_phone?code=3456' - marks phone number as confirmed if code is correct.    
 

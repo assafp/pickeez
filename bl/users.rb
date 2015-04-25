@@ -63,7 +63,10 @@ post '/set_phone' do
 end
 
 post '/resend_code_sms' do
-  {msg: 'not yet implemented.'}
+  phone = cu['phone']
+  msg = "Pickeez: Your code is #{cu['phone_verification_code']}"  
+  send_sms(phone, msg)
+  {msg: 'resent'}
 end
 
 #curl -d "foo=zomba&phone=0522934321&code=foo&token=0_jUrwgi-xz0rh1QR5WUDQrkRVzOr3WBms3SsWjmF2Hg" "localhost:9292/confirm_phone"
