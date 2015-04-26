@@ -1,6 +1,6 @@
 after do 
 	if @response.body.is_a? Hash #return hashes as json
-		content_type 'application/json'
+		content_type 'application/json', 'charset' => 'utf-8'
     @response.body = @response.body.to_json		
 	end
 
