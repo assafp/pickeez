@@ -1,44 +1,10 @@
-Meeting with Amit
------------------
-- mark as pending when user joined if already invited to albums
-- don't mark as pending... check other cases 
-
-- user "set_face" route, and when set_face is called then mark all of his albums as pending (instead of  right now where it's when he joins)
-
-Issues:
-
-Signup
-- signup and get token to represent user, not session
-- list of countries with area codes 
-- update user phone number + send verification code SMS
-- resend verification code 
-- verify verification code (and mark phone number as correct)
-
-All-Albums
-- get my albums 
-- delete album
-- create album
-- set album name 
-
-Invite
-- send SMS to users or push notification. 
-  - allow multiple sending, but not within the same hour 
-    - also send within another 24 hours if he did not respond 
-
-Album-Photos 
-- get album:
-  - photos (grouped by uploading user)
-- remove-user-from-album 
-  - remove all photos that he added
-- remove photo[s] from album
-  - only if owner or creator 
-
-- set album name 
-- invite (+share)
-- delete album
-
-User
-- approve notifications 
-- how_to -  
-- delete user (and all his photos and albums)
-- 
+Open issues
+===========
+- send push notifs
+- use PUMA web server (Read about when to scale dynos?)
+- log errors
+- add indexes:
+  - album_id for photos
+  - phones_invited for album 
+  - owner_id for albums 
+  - created_at for errors

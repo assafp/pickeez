@@ -43,6 +43,12 @@ get '/error' do
   a = b
 end
 
+get '/errors' do 
+  #halt(401, 'Nothing to see here') unless params[:password]==settings.algo_password
+  errors = $errors.find.sort(created_at: -1).limit(30).to_a.map {|e| e.just('created_at', 'msg', 'backtrace')}
+    {errors: errors}
+end
+
 get '/halt' do
   halt(400, {a:1})
 end
