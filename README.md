@@ -13,7 +13,7 @@ Important routes, in expected chronological order of usage (HTTP GET unless othe
 
 > POST '/albums/create' - creates an album, returns created album_id.
 
-> POST '/albums/123?name=donkey' - updates album 123 with params sent, such as 'name'. (Send post params in body request, of course.) You can also update fields like 'local_album_id'. 
+> POST '/albums/123?name=donkey' - updates album 123 with params sent, such as 'name'. (Send post params in body request, of course.) You can also update fields like 'local_album_id' or 'photo_creation_date'.
 
   > to delete album, supply parameter 'deleted=true' to this call. 
 
