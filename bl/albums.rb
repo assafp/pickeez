@@ -85,6 +85,7 @@ module Albums
         
         p.delete('computed_filters')
         p.delete('filters')
+        p.delete('algo_decision')
       }
     }
 

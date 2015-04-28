@@ -111,7 +111,8 @@ namespace '/photos' do
         action = flag == true ? '$addToSet' : '$pull'
         log[i+=1] = "#{action} on photo #{photo_id} and user #{user_id}"
         $photos.update({_id: photo_id}, { action => {computed_filters: user_id } }) 
-      }       
+      } 
+      $photos.update({_id: photo_id}, { '$set' => {algo_decision: tuples } })       
     }
     {msg: 'ok, set', log: log}
   end
