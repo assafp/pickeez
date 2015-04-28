@@ -2,7 +2,7 @@ $photos = $mongo.collection('photos')
 
 SETTABLE_PHOTO_FIELDS = [:s3_path, :album_id, :inferred_data, 
                          :uploader_id, :name,
-                         :computed_filters, :removed_by, :owner_id, :s3_server_id, :num_faces, :photo_local_id]
+                         :computed_filters, :removed_by, :owner_id, :s3_server_id, :num_faces, :photo_local_id, :photo_creation_date]
 
 REQUIRED_PHOTO_FIELDS = [:s3_path, :album_id]
 
