@@ -2,7 +2,6 @@ Open issues
 ===========
 - send push notifs
 - use PUMA web server (Read about when to scale dynos?)
-- log errors
 - add indexes:
   - album_id for photos
   - phones_invited for album 

@@ -113,5 +113,4 @@ Integration example:
 
 TBD:
 
-> Send SMS with code upon entering phone and when requesting resend. 
 > Send SMS/push notif when inviting user to album

@@ -28,7 +28,7 @@ end
 
 get '/ping' do 
   cross_origin
-  {msg: "pong from pickeez"}
+  {msg: "pong from pickeez", pid: Process.pid, thread_id: Thread.current.object_id}
 end
 
 get '/routes' do
