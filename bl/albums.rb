@@ -3,7 +3,7 @@ $pending_albums = $mongo.collection('pending_albums')
 
 SETTABLE_ALBUM_FIELDS = [:owner_id, :name, :accepted_members, 
                          :pending_members, :last_modified, :last_modifying_user,
-                         :deleted, :local_album_id
+                         :deleted
                          ]
 
 REQUIRED_ALBUM_FIELDS = [:owner_id]
@@ -147,7 +147,10 @@ namespace '/albums' do
 
   #create
   post '/create' do
-    res = Albums.create(params.merge!({owner_id: cuid}))
+    data = params.merge!({owner_id: cuid})
+    album_local_id = data.delete('album_local_id')
+    res = Albums.create(data)    
+    $albums.update_id(res[:_id], { "album_local_id.#{cuid}" => album_local_id } )
     {_id: res[:_id]}
   end
 
@@ -160,6 +163,11 @@ namespace '/albums' do
 
     res = Albums.update(id, params) 
     Albums.get(id) || 404
+  end
+
+  post '/:id/set_album_local_id' do
+    $albums.update_id(params[:id], { "album_local_id.#{cuid}" => params[:album_local_id] } )
+    {msg: "ok"}
   end
 
   post '/:id/delete' do 

@@ -11,7 +11,7 @@ Important routes, in expected chronological order of usage (HTTP GET unless othe
 
 > '/me' - will return the user pickeez identifies as sending the request. Send with pickeez token, as in '/me?token=wqQjsY0j4-3biVLi8C0EYwCa18RFzzBrNqBVduipoo-w'
 
-> POST '/albums/create' - creates an album, returns created album_id.
+> POST '/albums/create' - creates an album, returns created album_id. You may also supply an 'album_local_id' parameter.
 
 > POST '/albums/123?name=donkey' - updates album 123 with params sent, such as 'name'. (Send post params in body request, of course.) You can also update fields like 'local_album_id'.
 
@@ -44,6 +44,8 @@ Important routes, in expected chronological order of usage (HTTP GET unless othe
 // new routes, March 2015:
 
 > POST /albums/3573/done_uploading - to signify album is ready to be processed
+
+> POST "album_local_id=123" /albums/7762/set_album_local_id (to set album_local_id)
 
 > POST "type=like" /photos/7762/set_filter  (or "type=dislike")
 
