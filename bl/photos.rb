@@ -2,7 +2,7 @@ $photos = $mongo.collection('photos')
 
 SETTABLE_PHOTO_FIELDS = [:s3_path, :album_id, :inferred_data, 
                          :uploader_id, :name,
-                         :computed_filters, :removed_by, :owner_id, :s3_server_id, :num_faces, :photo_local_id, :photo_creation_date]
+                         :computed_filters, :removed_by, :owner_id, :s3_server_id, :num_faces, :photo_creation_date, :photo_local_id]
 
 REQUIRED_PHOTO_FIELDS = [:s3_path, :album_id]
 
@@ -55,6 +55,7 @@ namespace '/photos' do
     halt(401, "No such album") unless $albums.exists?(params[:album_id])
     data = params
     data[:owner_id] = cuid
+    data[:photo_local_id] = {"#{cuid}" => params[:photo_local_id]}
     res = Photos.create(data)
     {_id: res._id}
   end
@@ -70,6 +71,11 @@ namespace '/photos' do
   post '/:id/set_filter' do     
     filter_type = {like: 'like', dislike: 'dislike'}[params[:type].to_sym] || 'none'
     $photos.update_id(params[:id], { "filters.#{cuid}" => filter_type } )
+    {msg: "ok"}
+  end
+
+  post '/:id/set_photo_local_id' do
+    $photos.update_id(params[:id], { "photo_local_id.#{cuid}" => params[:photo_local_id] } )
     {msg: "ok"}
   end
 

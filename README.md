@@ -13,13 +13,13 @@ Important routes, in expected chronological order of usage (HTTP GET unless othe
 
 > POST '/albums/create' - creates an album, returns created album_id.
 
-> POST '/albums/123?name=donkey' - updates album 123 with params sent, such as 'name'. (Send post params in body request, of course.) You can also update fields like 'local_album_id' or 'photo_creation_date'.
+> POST '/albums/123?name=donkey' - updates album 123 with params sent, such as 'name'. (Send post params in body request, of course.) You can also update fields like 'local_album_id'.
 
   > to delete album, supply parameter 'deleted=true' to this call. 
 
 > '/albums/mine' - returns list of albums belonging to requesting user. 
 
-> POST '/photos/' - add a photo. Required params are 's3_path' and a valid album_id. You may also send 's3_server_id' and 'photo_local_id'.
+> POST '/photos/' - add a photo. Required params are 's3_path' and a valid album_id. You may also send 's3_server_id' and 'photo_local_id' and 'photo_creation_date'.
 
 > '/albums/123' - gets album with its photos, grouped by users.  
 
@@ -46,6 +46,8 @@ Important routes, in expected chronological order of usage (HTTP GET unless othe
 > POST /albums/3573/done_uploading - to signify album is ready to be processed
 
 > POST "type=like" /photos/7762/set_filter  (or "type=dislike")
+
+> POST "photo_local_id=123" /photos/7762/set_photo_local_id (to set photo_local_id)
 
 > POST /photos/7762/delete - remove photo
 

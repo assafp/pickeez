@@ -7,3 +7,7 @@ Open issues
   - phones_invited for album 
   - owner_id for albums 
   - created_at for errors
+
+
+- local id for uploading user
+- update photo_local_id 
