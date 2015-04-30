@@ -19,7 +19,7 @@ Important routes, in expected chronological order of usage (HTTP GET unless othe
 
 > '/albums/mine' - returns list of albums belonging to requesting user. 
 
-> POST '/photos/' - add a photo. Required params are 's3_path' and a valid album_id. You may also send 's3_server_id' and 'photo_local_id' and 'photo_creation_date'.
+> POST '/photos/' - add a photo. Required params are 's3_path' and a valid album_id. You may also send 's3_server_id' and 'photo_local_id' and 'photo_creation_date' and 'local_creation_date'..
 
 > '/albums/123' - gets album with its photos, grouped by users.  
 
