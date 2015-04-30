@@ -54,15 +54,16 @@ Important routes, in expected chronological order of usage (HTTP GET unless othe
 > POST /photos/7762/delete - remove photo
 
 > POST /photos/4092/set_faces_data
-# curl -X POST -H "Content-Type: application/json" -d '{"rectangles": [{"x": 1, "y": 2, "width": 3, "height": 4}, {"x": 5.1, "y": 6, "width": 7, "height": 8} ], "detected_faces_data": {"face": "yes", "eyes": "no"} }' "pickeezmetadata.com/photos/9432/set_faces_data"
+
+$ curl -X POST -H "Content-Type: application/json" -d '{"rectangles": [{"x": 1, "y": 2, "width": 3, "height": 4}, {"x": 5.1, "y": 6, "width": 7, "height": 8} ], "detected_faces_data": {"face": "yes", "eyes": "no"} }' "pickeezmetadata.com/photos/9432/set_faces_data"
   # verify by pickeezmetadata.com/photos/9432
 
-# curl -g "www.pickeezmetadata.com/users/which_phones_registered?phones[]=10&phones[]=20"
+$ curl -g "www.pickeezmetadata.com/users/which_phones_registered?phones[]=10&phones[]=20"
 > /users/which_phones_registered 
   > usage example: GET www.pickeezmetadata.com/users/which_phones_registered?phones[]=972522934321&phones[]=20&token=TOKEN
 
-# curl -d "field=send_push_notifs&val=false" localhost:9292/set_fields
-# curl -d "field=push_notif_token&val=123abc" localhost:9292/set_fields
+$ curl -d "field=send_push_notifs&val=false" localhost:9292/set_fields
+$ curl -d "field=push_notif_token&val=123abc" localhost:9292/set_fields
 > /set_fields (to set push notification setting and token)
 
 // data for invite page:
