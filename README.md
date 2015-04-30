@@ -53,10 +53,9 @@ Important routes, in expected chronological order of usage (HTTP GET unless othe
 
 > POST /photos/7762/delete - remove photo
 
-> POST /photos/4092/set_faces_data
-
 $ curl -X POST -H "Content-Type: application/json" -d '{"rectangles": [{"x": 1, "y": 2, "width": 3, "height": 4}, {"x": 5.1, "y": 6, "width": 7, "height": 8} ], "detected_faces_data": {"face": "yes", "eyes": "no"} }' "pickeezmetadata.com/photos/9432/set_faces_data"
   # verify by pickeezmetadata.com/photos/9432
+> POST /photos/4092/set_faces_data
 
 $ curl -g "www.pickeezmetadata.com/users/which_phones_registered?phones[]=10&phones[]=20"
 > /users/which_phones_registered 
@@ -116,6 +115,4 @@ Integration example:
 
 ******
 
-TBD:
-
-> Send SMS/push notif when inviting user to album
+TBD: Sending push notifs.
