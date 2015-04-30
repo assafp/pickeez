@@ -55,8 +55,9 @@ namespace '/photos' do
     halt(401, "No such album") unless $albums.exists?(params[:album_id])
     data = params
     data[:owner_id] = cuid
-    data[:photo_local_id] = {"#{cuid}" => params[:photo_local_id]}
-    res = Photos.create(data)
+    photo_local_id = data.delete('photo_local_id')
+    res = Photos.create(data)    
+    $photos.update_id(res[:_id], { "photo_local_id.#{cuid}" => photo_local_id } )
     {_id: res._id}
   end
 
