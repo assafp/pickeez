@@ -39,6 +39,15 @@ get '/raise404' do
   status 404
 end
 
+get '/send_push_notif' do
+  body = params.merge({auth_token: ENV['PICKEEZ_ZEROPUSH_TOKEN']})
+  route = "https://api.zeropush.com/notify"  
+
+  res = HTTPClient.new.post(route, {auth_token:ENV['PICKEEZ_ZEROPUSH_TOKEN'], "device_tokens[]" => params[:device_token], badge: params[:badge], category: params[:category], alert: params[:alert]})
+  
+  {msg: "ok", res: res.body}
+end
+
 get '/error' do 
   a = b
 end

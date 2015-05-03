@@ -21,3 +21,4 @@ gem 'pony'                            # emails
 gem 'twilio-ruby'
 gem "sinatra-cross_origin", "~> 0.3.1"
 gem 'puma'
+gem 'zero_push'
