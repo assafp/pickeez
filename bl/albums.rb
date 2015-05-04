@@ -171,6 +171,7 @@ namespace '/albums' do
   post '/:id/delete' do 
     id = params[:id]
     $albums.update({_id: id}, '$set': {deleted: true})
+    $pending_albums.remove({album_id: id})
     Albums.get(id) || 404
   end
 

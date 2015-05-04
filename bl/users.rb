@@ -1,14 +1,22 @@
 $users = $mongo.collection('users')
 
+$users.ensure_index('phone')
+$users.ensure_index('verified_phone')
+$users.ensure_index('fb_id')
+$users.ensure_index('model')
+
+
 SETTABLE_USER_FIELDS = [:name, :desc, :img, :phone, 
                 :email, :fb_page, :website, :updated_at,
                 :phone_verification_code, :verified_phone, :pic_url
               ]
 
+NOMODEL = 'empty'
+
 module Users
   extend self
 
-  def create(params)
+  def create(params)    
     $users.add(params.merge({token: SecureRandom.urlsafe_base64+SecureRandom.urlsafe_base64}))  
   end
 
@@ -25,7 +33,8 @@ module Users
     pic_url = "http://graph.facebook.com/#{fb_id}/picture"
     name = fb_data['name']
     email = fb_data['email']
-    data = {fb_id: fb_id, pic_url: pic_url, name: name, email: email, fb_data: fb_data}
+    data = {fb_id: fb_id, pic_url: pic_url, name: name, email: email, fb_data: fb_data, model: NOMODEL}
+    create(data)
     $users.get({fb_id: fb_id}) || create(data)
   end 
 
@@ -157,5 +166,63 @@ get '/users/which_phones_registered' do
   res
 end
 
-#Users.create_test_users
+# ALGO part
 
+def get_json(path)
+  JSON.parse ((HTTPClient.new.get path).body) 
+end
+
+def get_facebook_profile_pics(user_fb_id, code)
+  #get profile pics album_id
+  path = "https://graph.facebook.com/v2.3/#{user_fb_id}/albums?access_token=#{code}"
+  albums = get_json(path)
+  profile_pics_album_id = albums.data.select {|album| album['name'] == 'Profile Pictures'}[0]['id']
+
+  #get those pics
+  pics_path = "https://graph.facebook.com/v2.3/#{profile_pics_album_id}/photos?access_token=#{code}"
+  profile_pics = get_json(pics_path)
+  final_pics = profile_pics.data.map {|photo| {image: photo['images'][0]['source']}}
+end
+
+def get_facebook_tagged_pics(user_fb_id, code)
+  path = "https://graph.facebook.com/v2.3/#{user_fb_id}/photos?access_token=#{code}&limit=100"
+  payload = get_json(path)
+  res = payload['data'].map { |photo|     
+     {image: photo['images'][0]['source'], 
+     tag: photo['tags']['data'].select {|tag| tag['id'].to_s == user_fb_id.to_s}[0].just(:x,:y) 
+     } 
+  }
+end
+
+def get_fb_pics_data(user_fb_id, code)
+  {
+    user_fb_id: user_fb_id,
+    profile_pics: get_facebook_profile_pics(user_fb_id, code),
+    tagged_pics:  get_facebook_tagged_pics(user_fb_id, code)
+  }
+end
+
+get '/users/algo/pending_model' do 
+  forced_user_id = params[:forced_user_id]
+  if forced_user_id
+    user = $users.get(forced_user_id)
+  else 
+    user = $users.find_one({model: NOMODEL})
+  end
+
+  return {msg: 'empty'} unless user
+
+  fb_data = get_fb_pics_data(user['fb_id'], user['fb_data']['code'])  
+  $users.update_id(user['_id'], {model: {retrieved_at: Time.now}}) unless forced_user_id
+
+  {user_id: forced_user_id || user['_id'],
+   fb_data: fb_data}
+end
+
+post '/users/algo/model/set' do
+  $users.update_id(params[:user_id],{model: params[:model]})
+end
+
+get '/users/algo/model/get' do
+  {model: $users.get(params[:user_id])['model']}
+end
