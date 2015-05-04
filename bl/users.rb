@@ -2,8 +2,7 @@ $users = $mongo.collection('users')
 
 SETTABLE_USER_FIELDS = [:name, :desc, :img, :phone, 
                 :email, :fb_page, :website, :updated_at,
-                :phone_verification_code, :verified_phone, :pic_url,
-                :phone_8_digits
+                :phone_verification_code, :verified_phone, :pic_url
               ]
 
 module Users
@@ -78,9 +77,8 @@ post '/confirm_phone' do
 
   if (phone_verification_code == code) || force
     verified_phone = cu['phone']
-    phone_8_digits = verified_phone.to_s.split(//).last(8).join #we use last 8 digits so 972521234567 matches 21234567, so when people invite using local number it'll work out.
-    Users.update({id: cuid, verified_phone: verified_phone, phone_8_digits: phone_8_digits});
-    Albums.mark_user_albums_as_pending(phone_8_digits)
+    Users.update({id: cuid, verified_phone: verified_phone});
+    Albums.mark_user_albums_as_pending(verified_phone)
     {ok: true}
   else 
     {err: 'wrong code'}

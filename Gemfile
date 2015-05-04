@@ -12,7 +12,7 @@ gem 'mongo',								'1.11.1' # mongodb
 gem 'bson_ext', 						'1.11.1' # helps mongo performance
 gem 'rack-parser', 		      '0.6.0' # rack middleware
 gem 'bcrypt', 					    '3.1.7' # encryption for user passwords
-gem 'activesupport',      	'4.0.0' # utility functions like hash.slice
+#gem 'activesupport',      	'4.0.0' # utility functions like hash.slice
 #gem 'random-word',          '1.3.0' # for random words for testing
 #gem 'bower',                '0.0.2' # for frontend asset management
 gem 'require_all'
@@ -22,3 +22,6 @@ gem 'twilio-ruby'
 gem "sinatra-cross_origin", "~> 0.3.1"
 gem 'puma'
 gem 'zero_push'
+gem 'phonelib'                         # for phone parsing
+gem 'activerecord',         '~>3.2.13' #goddamn AR. Just for phony_rails and active_support (for hash.slice)
+gem 'phony_rails'                      # for phone constructing

@@ -40,8 +40,7 @@ module Albums
     users = []
     phones_without_users = []
     album.fetch('invited_phones', []).each {|phone|       
-      phone_8_digits = phone.to_s.split(//).last(8).join
-      user = Users.basic_data(:verified_phone, phone) || Users.basic_data(:phone_8_digits, phone_8_digits)
+      user = Users.basic_data(:verified_phone, phone)
       user ? users.push(user) : phones_without_users.push(phone)
     }
     owner = Users.basic_data(:_id, album['owner_id'])
@@ -97,8 +96,8 @@ module Albums
     $pending_albums.update({album_id: id},{'$set' => {time_updated: Time.now}}, {upsert: true})
   end
 
-  def mark_user_albums_as_pending(phone_8_digits)
-    albums = Albums.mine_by_phone([phone_8_digits])
+  def mark_user_albums_as_pending(phone)
+    albums = Albums.mine_by_phone([phone])
     albums.each {|x| }
   end
 
@@ -125,9 +124,8 @@ namespace '/albums' do
   get '/mine' do      
     #albums = $albums.find_all({owner_id: cuid}).to_a
     verified_phone = cu['verified_phone'] || 'no-such-phone'
-    phone_8_digits = cu['phone_8_digits'] || 'no_8_digit_phone'
     
-    albums = Albums.mine_by_phone([verified_phone,phone_8_digits], cuid)
+    albums = Albums.mine_by_phone([verified_phone], cuid)
 
     albums.each {|al| 
       Albums.add_photos_data(al,cuid) 
@@ -191,8 +189,8 @@ namespace '/albums' do
     removing_my_phone = (invited_phones.size == 1) && (invited_phones[0] == cu['verified_phone']) && params['remove']
 
     halt(401, 'not album owner') unless (cuid == album['owner_id']) || removing_my_phone
-    
-    invited_phones = invited_phones.map {|phone| phone.to_s.split(//).last(8).join }
+  
+    invited_phones = invited_phones.map {|phone| force_international(phone, cu['phone']) }
 
     if params['remove'] 
       $albums.update({_id: album_id}, {'$pullAll' => {invited_phones: invited_phones  } })
@@ -200,8 +198,8 @@ namespace '/albums' do
       $albums.update({_id: album_id}, {'$addToSet' => {invited_phones: {'$each': invited_phones } } })
     end
 
-    invited_phones.each do |phone_8_digits| 
-      invited_existing_user = Users.basic_data(:phone_8_digits, phone_8_digits)
+    invited_phones.each do |phone| 
+      invited_existing_user = Users.basic_data(:verified_phone, phone)
       if invited_existing_user 
         Albums.mark_pending(params[:id])  
         break
