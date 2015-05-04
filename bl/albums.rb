@@ -41,7 +41,7 @@ module Albums
     phones_without_users = []
     album.fetch('invited_phones', []).each {|phone|       
       user = Users.basic_data(:verified_phone, phone)
-      user ? users.push(user) : phones_without_users.push(phone)
+      user ? users.push(user) : phones_without_users.push(Phones.international_to_local(phone))
     }
     owner = Users.basic_data(:_id, album['owner_id'])
     owner[:is_owner] = true

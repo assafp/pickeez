@@ -5,6 +5,10 @@ module Phones
     Phonelib.parse(international_number).country
   end
 
+  def international_to_local(international_number)
+    Phonelib.parse(international_number).national.tr('-','')
+  end
+
   def local_to_international(local_number,country_code)
     PhonyRails.normalize_number(local_number, :country_code => country_code)
   end
