@@ -181,15 +181,15 @@ def get_facebook_profile_pics(user_fb_id, code)
   #get those pics
   pics_path = "https://graph.facebook.com/v2.3/#{profile_pics_album_id}/photos?access_token=#{code}"
   profile_pics = get_json(pics_path)
-  final_pics = profile_pics.data.map {|photo| {image: photo['images'][0]['source']}}
+  final_pics = profile_pics.data.map {|photo| {image: photo['images'][0]}}
 end
 
 def get_facebook_tagged_pics(user_fb_id, code)
   path = "https://graph.facebook.com/v2.3/#{user_fb_id}/photos?access_token=#{code}&limit=100"
   payload = get_json(path)
   res = payload['data'].map { |photo|     
-     {image: photo['images'][0]['source'], 
-     tag: photo['tags']['data'].select {|tag| tag['id'].to_s == user_fb_id.to_s}[0].just(:x,:y) 
+     {image: photo['images'][0], 
+     tag: photo['tags']['data'].select {|tag| tag['id'].to_s == user_fb_id.to_s}[0]
      } 
   }
 end
