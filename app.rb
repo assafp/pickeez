@@ -41,8 +41,9 @@ end
 
 get '/send_push_notif' do
   device_token = params[:device_token]
+  alert = params[:alert].to_s || "Pickeez Notification"
   info = {album_id: params[:album_id], type: params[:type]}
-  send_push_notif([device_token],info)  
+  send_push_notif([device_token],alert,info)  
 end
 
 get '/error' do 
