@@ -28,6 +28,11 @@ end
 
 get '/ping' do 
   cross_origin
+  begin 
+    a = b
+  rescue => e
+    log_exception(e)
+  end
   {msg: "pong from pickeez", pid: Process.pid, thread_id: Thread.current.object_id}
 end
 
@@ -37,15 +42,6 @@ end
 
 get '/raise404' do
   status 404
-end
-
-get '/foo' do
-
-  begin 
-    a = b
-  rescue => e
-    log_exception(e)
-  end
 end
 
 get '/send_push_notif' do

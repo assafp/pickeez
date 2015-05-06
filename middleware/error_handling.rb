@@ -16,7 +16,7 @@ end
 $errors = $mongo.collection('errors')
 
 def log_exception(e)
-  trace = e.backtrace[0..3]
+  backtrace = e.backtrace.to_a.slice(0,4).to_s
   msg = e.message
-  $errors.add({trace: trace, msg: msg})
+  $errors.add({backtrace: backtrace, msg: msg})
 end
