@@ -175,10 +175,12 @@ namespace '/albums' do
     Albums.get(id) || 404
   end
 
-  # curl -d "" "localhost:9292/albums/3573/done_uploading"
+  # curl -d "" "localhost:8002/albums/3573/done_uploading"
   post '/:id/done_uploading' do    
     halt(401, "No such album") unless $albums.exists?(params[:id])
     $pending_albums.update({album_id: params[:id]},{'$set' => {done_uploading: "true"}}, {upsert: true})
+
+    PushNotifs.send_uploaded_photos(cuid, params[:id])
     {msg: "updated done uploading"}
   end
 

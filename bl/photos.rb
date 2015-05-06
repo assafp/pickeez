@@ -105,22 +105,31 @@ namespace '/photos' do
 
   # algo 
 
-  # curl -X POST -H "Content-Type: application/json" -d '{"photos": {"4128": {"2": true, "1": false }}}' "localhost:9292/photos/algo/set"
+  # curl -X POST -H "Content-Type: application/json" -d '{"photos": {"8320": {"2": true, "1": false }, "5306": {"2": true} }}' "localhost:8002/photos/algo/set"
   post '/algo/set' do
     photos = params[:photos]
     stop_401("No photos supplied.") unless photos    
     i = 0
     log = {}
+    users_affected = []
     photos.each {|photo_id, tuples|
       #puts photo_id;
       tuples.each { |user_id, flag| 
         #puts "updating photo #{photo_id} for #{user_id}"
         action = flag == true ? '$addToSet' : '$pull'
+        users_affected << user_id
         log[i+=1] = "#{action} on photo #{photo_id} and user #{user_id}"
         $photos.update({_id: photo_id}, { action => {computed_filters: user_id } }) 
       } 
       $photos.update({_id: photo_id}, { '$set' => {algo_decision: tuples } })       
     }
+
+    begin
+      album_id       = params[:album_id] || $photos.get(photos.key[0])[:album_id]
+      PushNotifs.send_album_filtered(users_affected, album_id)
+    rescue => e
+      $errors.add(e.to_json)
+    end
     {msg: 'ok, set', log: log}
   end
 

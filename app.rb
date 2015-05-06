@@ -40,11 +40,11 @@ get '/raise404' do
 end
 
 get '/send_push_notif' do
-  device_token = params[:device_token]
+  user_id = params[:user_id]
   alert = params[:alert].to_s || "Pickeez Notification"
   info = {album_id: params[:album_id], type: params[:type]}
   badge = params[:badge]
-  send_push_notif([device_token],alert,info,badge)  
+  PushNotifs.send_notif([user_id],alert,info,badge)  
 end
 
 get '/error' do 
