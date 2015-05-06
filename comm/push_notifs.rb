@@ -31,8 +31,11 @@ module PushNotifs
     log_exception(e)
   end
 
-  def register_notif_token(notif_token)
+  def register_device_token(notif_token)
+    route = "https://api.zeropush.com/register"      
+    body = {device_token: notif_token, auth_token: ENV['PICKEEZ_ZEROPUSH_TOKEN'] }
 
+    res = HTTPClient.new.post(route, body)
   end
 
   #helpers
