@@ -15,7 +15,7 @@ module PushNotifs
     album_name = $albums.get(album_id)['name']
     alert = "Your best pictures are waiting for you from your album #{album_name}!"
     
-    send(user_ids, alert, {album_id: album_id})
+    send_notif(user_ids, alert, {album_id: album_id})
   end
 
   def send_uploaded_photos(uploader_id, album_id)
