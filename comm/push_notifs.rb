@@ -22,7 +22,7 @@ module PushNotifs
     uploader_name = $users.get(uploader_id)['name']
     album = $albums.get(album_id)
     album_name = album['name']
-    album_users = Albums.album_users(album)[:users]
+    album_users = Albums.album_users(album)[:users].map {|user| user['_id']}
     other_users = album_users.reject {|id| id == uploader_id}
     alert = "#{uploader_name} has added photos to the album #{album_name}! Come see your best pics from pickeez!"
     
