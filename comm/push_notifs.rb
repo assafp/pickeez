@@ -18,13 +18,7 @@ module PushNotifs
     send(user_ids, alert, {album_id: album_id})
   end
 
-  def foo
-    bp
-    "bar"
-  end
-
   def send_uploaded_photos(uploader_id, album_id)
-    bp
     uploader_name = $users.get(uploader_id)['name']
     album = $albums.get(album_id)
     album_name = album['name']
