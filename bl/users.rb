@@ -30,7 +30,7 @@ module Users
 
   def get_or_create_by_fb_id(fb_id, fb_data = {})
     fb_id = fb_id.to_s
-    pic_url = "http://graph.facebook.com/#{fb_id}/picture"
+    pic_url = "http://graph.facebook.com/#{fb_id}/picture?type=large"
     name = fb_data['name']
     email = fb_data['email']
     data = {fb_id: fb_id, pic_url: pic_url, name: name, email: email, fb_data: fb_data, model: NOMODEL}
