@@ -28,7 +28,11 @@ module PushNotifs
     
     send_notif(other_users, alert, {album_id: album_id})
   rescue => e
-    res = $errors.add(e.to_json)
+    log_exception(e)
+  end
+
+  def register_notif_token(notif_token)
+
   end
 
   #helpers

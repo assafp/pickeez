@@ -14,3 +14,9 @@ error do
 end
 
 $errors = $mongo.collection('errors')
+
+def log_exception(e)
+  trace = e.backtrace[0..3]
+  msg = e.message
+  $errors.add({trace: trace, msg: msg})
+end

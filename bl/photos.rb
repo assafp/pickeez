@@ -128,7 +128,7 @@ namespace '/photos' do
       album_id       = params[:album_id] || $photos.get(photos.key[0])[:album_id]
       PushNotifs.send_album_filtered(users_affected, album_id)
     rescue => e
-      $errors.add(e.to_json)
+      log_exception(e)
     end
     {msg: 'ok, set', log: log}
   end

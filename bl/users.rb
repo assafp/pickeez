@@ -150,8 +150,11 @@ end
 post '/set_fields' do
   field = params['field']
   val   = params['val']
-  halt(401, 'bad_field') unless ['send_push_notifs', 'push_notif_token'].include? field
+  halt(401, 'bad_field') unless ['send_push_notifs', 'push_notif_token'].include? field  
   $users.update_id(cuid, {field => val})
+
+  PushNotifs.register_notif_token(val) if field == 'push_notif_token'
+
   {msg: 'ok'}
 end
 

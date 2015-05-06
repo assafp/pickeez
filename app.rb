@@ -39,6 +39,15 @@ get '/raise404' do
   status 404
 end
 
+get '/foo' do
+
+  begin 
+    a = b
+  rescue => e
+    log_exception(e)
+  end
+end
+
 get '/send_push_notif' do
   user_id = params[:user_id]
   alert = params[:alert].to_s || "Pickeez Notification"
