@@ -34,7 +34,6 @@ module Users
     name = fb_data['name']
     email = fb_data['email']
     data = {fb_id: fb_id, pic_url: pic_url, name: name, email: email, fb_data: fb_data, model: NOMODEL}
-    create(data)
     $users.get({fb_id: fb_id}) || create(data)
   end 
 
