@@ -23,7 +23,7 @@ gem "sinatra-cross_origin", "~> 0.3.1"
 gem 'puma'
 gem 'zero_push'
 gem 'phonelib'                         # for phone parsing
-gem 'activerecord',         '~>3.2.13' #goddamn AR. Just for phony_rails and active_support (for hash.slice)
+gem 'activerecord',         '3.2.13' #goddamn AR. Just for phony_rails and active_support (for hash.slice)
 gem 'phony_rails'                      # for phone constructing
 gem 'ripl'
 gem 'ripl-color_result'
