@@ -78,7 +78,9 @@ IMPORTANT: In all of the 'algo' routes, you must supply a URL param called 'pass
 
 > /users/algo/pending_model - returns user for which there is no model, along with his profile pics and tagged pics. If you pass a "forced_user_id" parameter it will force this user (and not mark his model when done). E.g.: http://pickeezmetadata.com/users/algo/pending_model?forced_user_id=hwh9qclckg846 
 
-Models are set to 'empty' when a user is created, and set to non-nil after being called on 'pending'. You can set the as whatever you want by /model/set, below. 
+Models are set to 'empty' when a user is created, and set to non-nil after being called on 'pending'. You can set the as whatever you want by /model/set, below. You can also set ALL user models as pending using the following route:
+
+> /users/algo/model/make_all_pending
 
 > /users/algo/model/get - pass parameter 'user_id' to get that user's model.
 > POST /users/algo/model/set - pass 'user_id' (string) and 'model' (JSON) parameters to set that model for that user. 

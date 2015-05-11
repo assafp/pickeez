@@ -225,6 +225,10 @@ post '/users/algo/model/set' do
   $users.update_id(params[:user_id],{model: params[:model]})
 end
 
+get '/users/algo/model/make_all_pending' do 
+  $users.update({},{'$set': {model: NOMODEL}}, {multi: true})
+end
+
 get '/users/algo/model/get' do
   {model: $users.get(params[:user_id])['model']}
 end
