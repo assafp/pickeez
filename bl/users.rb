@@ -214,7 +214,7 @@ get '/users/algo/pending_model' do
 
   return {msg: 'empty'} unless user
 
-  limit = params[:limit].to_i || 100
+  limit = params[:limit] || 100
   fb_data = get_fb_pics_data(user['fb_id'], user['fb_data']['code'], limit)  
   $users.update_id(user['_id'], {model: {retrieved_at: Time.now}}) unless forced_user_id
 
