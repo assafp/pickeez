@@ -186,8 +186,8 @@ def get_facebook_profile_pics(user_fb_id, code)
   final_pics = profile_pics.data.map {|photo| {image: photo['images'][0]}}
 end
 
-def get_facebook_tagged_pics(user_fb_id, code)
-  path = "https://graph.facebook.com/v2.3/#{user_fb_id}/photos?access_token=#{code}&limit=100"
+def get_facebook_tagged_pics(user_fb_id, code, limit)
+  path = "https://graph.facebook.com/v2.3/#{user_fb_id}/photos?access_token=#{code}&limit=#{limit}"
   payload = get_json(path)
   res = payload['data'].map { |photo|     
      {image: photo['images'][0], 
@@ -196,11 +196,11 @@ def get_facebook_tagged_pics(user_fb_id, code)
   }
 end
 
-def get_fb_pics_data(user_fb_id, code)
+def get_fb_pics_data(user_fb_id, code, limit)
   {
     user_fb_id: user_fb_id,
     profile_pics: get_facebook_profile_pics(user_fb_id, code),
-    tagged_pics:  get_facebook_tagged_pics(user_fb_id, code)
+    tagged_pics:  get_facebook_tagged_pics(user_fb_id, code, limit)
   }
 end
 
@@ -214,7 +214,8 @@ get '/users/algo/pending_model' do
 
   return {msg: 'empty'} unless user
 
-  fb_data = get_fb_pics_data(user['fb_id'], user['fb_data']['code'])  
+  limit = params[:limit].to_i || 100
+  fb_data = get_fb_pics_data(user['fb_id'], user['fb_data']['code'], limit)  
   $users.update_id(user['_id'], {model: {retrieved_at: Time.now}}) unless forced_user_id
 
   {user_id: forced_user_id || user['_id'],

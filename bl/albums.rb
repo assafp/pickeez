@@ -226,6 +226,12 @@ namespace '/albums' do
       msg: 'This is just a debugging route.'}
   end
 
+  get '/algo/set_all_as_pending' do 
+    $pending_albums.remove
+    $albums.all.map {|a| $pending_albums.update({album_id: a['_id']},{'$set' => {done_uploading: "true"}}, {upsert: true}) }; 
+    {msg: 'set all as pending.', pending_count: $pending_albums.count}
+  end
+
   post '/algo/remove_pending' do 
     $pending_albums.remove
   end
