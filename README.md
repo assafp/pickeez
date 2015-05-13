@@ -90,9 +90,9 @@ Models are set to 'empty' when a user is created, and set to non-nil after being
 
 > POST /albums/algo/remove_pending - removes list of pending albums. 
 
-> /algo/all_pending - debugging route, shows you list of pending albums (but does not update when taking one.)
+> albums/algo/all_pending - debugging route, shows you list of pending albums (but does not update when taking one.)
 
-> /algo/set_all_as_pending - sets every single existing album as pending. 
+> albums/algo/set_all_as_pending - sets every single existing album as pending. 
 
 Integration example (if you are unfamiliar with cURL, LMK.)
 
