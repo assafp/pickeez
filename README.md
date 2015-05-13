@@ -82,13 +82,17 @@ Models are set to 'empty' when a user is created, and set to non-nil after being
 
 > /users/algo/model/make_all_pending
 
-> /users/algo/model/get - pass parameter 'user_id' to get that user's model.
+> /users/algo/model/get - pass parameter 'user_id' to get that user's model. Pass 'limit' to set number of pics to retrieve (default is 100). Pass param 'forced_user_id' to force that user_id (and not update 'pending' status or model). 
+
 > POST /users/algo/model/set - pass 'user_id' (string) and 'model' (JSON) parameters to set that model for that user. 
 
 > /albums/algo/get_pending - gets next pending album. 
+
 > POST /albums/algo/remove_pending - removes list of pending albums. 
 
 > /algo/all_pending - debugging route, shows you list of pending albums (but does not update when taking one.)
+
+> /algo/set_all_as_pending - sets every single existing album as pending. 
 
 Integration example (if you are unfamiliar with cURL, LMK.)
 
