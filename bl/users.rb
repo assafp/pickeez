@@ -178,7 +178,10 @@ def get_facebook_profile_pics(user_fb_id, code)
   #get profile pics album_id
   path = "https://graph.facebook.com/v2.3/#{user_fb_id}/albums?access_token=#{code}"
   albums = get_json(path)
-  profile_pics_album_id = albums.data.select {|album| album['name'] == 'Profile Pictures'}[0]['id']
+  
+  profile_pics_album = (albums.data.select {|album| album['name'] == 'Profile Pictures'})[0]
+  return [] unless profile_pics_album
+  profile_pics_album_id = profile_pics_album['id']
 
   #get those pics
   pics_path = "https://graph.facebook.com/v2.3/#{profile_pics_album_id}/photos?access_token=#{code}"
