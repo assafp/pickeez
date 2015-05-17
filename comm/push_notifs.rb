@@ -1,13 +1,13 @@
 module PushNotifs
   extend self
 
-  def send_notif(user_ids, alert, info, badge = nil)
+  def send_notif(user_ids, alert, info, sound = nil, badge = nil)
     device_tokens_arr = get_device_tokens(user_ids)
     #body  = info.merge({auth_token: ENV['PICKEEZ_ZEROPUSH_TOKEN']})
-    info  = info.merge({sound: "blip.wav"})
+    sound = "blip.wav"
     route = "https://api.zeropush.com/notify"  
     token = ENV['PICKEEZ_ZEROPUSH_TOKEN'] 
-    res = HTTPClient.new.post(route, {auth_token:token, "device_tokens[]" => device_tokens_arr, info: info.to_json, alert: alert, badge: badge})
+    res = HTTPClient.new.post(route, {auth_token:token, "device_tokens[]" => device_tokens_arr, info: info.to_json, alert: alert, badge: badge, sound: sound})
     
     {msg: "ok", res: res.body, info: info}
   end  

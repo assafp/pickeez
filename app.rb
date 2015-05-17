@@ -49,7 +49,7 @@ get '/send_push_notif' do
   alert = params[:alert].to_s || "Pickeez Notification"
   info = {album_id: params[:album_id], type: params[:type]}
   badge = params[:badge]
-  PushNotifs.send_notif([user_id],alert,info,badge)  
+  PushNotifs.send_notif([user_id],alert,info,nil,badge)  
 end
 
 get '/error' do 
