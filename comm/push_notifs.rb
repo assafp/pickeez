@@ -3,12 +3,13 @@ module PushNotifs
 
   def send_notif(user_ids, alert, info, badge = nil)
     device_tokens_arr = get_device_tokens(user_ids)
-    body  = info.merge({auth_token: ENV['PICKEEZ_ZEROPUSH_TOKEN'], sound: "blip.wav"})
+    #body  = info.merge({auth_token: ENV['PICKEEZ_ZEROPUSH_TOKEN']})
+    info  = info.merge({sound: "blip.wav"})
     route = "https://api.zeropush.com/notify"  
     token = ENV['PICKEEZ_ZEROPUSH_TOKEN'] 
     res = HTTPClient.new.post(route, {auth_token:token, "device_tokens[]" => device_tokens_arr, info: info.to_json, alert: alert, badge: badge})
     
-    {msg: "ok", res: res.body}
+    {msg: "ok", res: res.body, info: info}
   end  
 
   def send_album_filtered(user_ids, album_id)
