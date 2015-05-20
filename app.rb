@@ -83,6 +83,7 @@ get '/invite_page' do
     crit = {album_id: album_id, "detected_data.imageOrientation" => HORIZONTAL_ORIENTATION}
   else 
     crit = {album_id: album_id}
+  end
   
   photos = $photos.find(crit).limit(10).map {|p| {url: p['s3_path']} }.to_a
   
