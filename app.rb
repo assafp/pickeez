@@ -67,6 +67,7 @@ get '/halt' do
 end
 
 HORIZONTAL_ORIENTATION = 1
+# /invite_page?album_id=hwomgwkulv902&user_id=hwnplhadt7582
 get '/invite_page' do
   cross_origin
   album_id = params[:album_id]
@@ -77,7 +78,7 @@ get '/invite_page' do
   owner = $users.get(album['owner_id'])
   
   if params[:filtered]
-    crit = {:$and => [{album_id: album_id}, {:$or => [{computed_filters: user_id}, {"algo_decision.#{user_id}" => true}]} 
+    crit = {:$and => [{album_id: album_id}, {:$or => [{computed_filters: user_id}, {"algo_decision.#{user_id}" => true}]}]} 
   elsif params[:wide]
     crit = {album_id: album_id, "detected_data.imageOrientation" => HORIZONTAL_ORIENTATION}
   else 
