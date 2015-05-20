@@ -66,14 +66,24 @@ get '/halt' do
   halt(400, {a:1})
 end
 
+HORIZONTAL_ORIENTATION = 1
 get '/invite_page' do
   cross_origin
   album_id = params[:album_id]
+  user_id  = params[:user_id]
   halt(400, "No album ID") unless album_id
   
   album = $albums.get(album_id)
   owner = $users.get(album['owner_id'])
-  photos = $photos.find({album_id: album_id}).limit(10).map {|p| {url: p['s3_path']} }.to_a
+  
+  if params[:filtered]
+    crit = {:$and => [{album_id: album_id}, {:$or => [{computed_filters: user_id}, {"algo_decision.#{user_id}" => true}]} 
+  elsif params[:wide]
+    crit = {album_id: album_id, "detected_data.imageOrientation" => HORIZONTAL_ORIENTATION}
+  else 
+    crit = {album_id: album_id}
+  
+  photos = $photos.find(crit).limit(10).map {|p| {url: p['s3_path']} }.to_a
   
   {album_name: album['name'], owner_name: owner['name'], photos: photos}
 end
