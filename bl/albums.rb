@@ -232,7 +232,7 @@ namespace '/albums' do
     {msg: 'set all as pending.', pending_count: $pending_albums.count}
   end
 
-  post '/algo/remove_pending' do 
+  get '/algo/remove_pending' do 
     $pending_albums.remove
   end
 
