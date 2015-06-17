@@ -1,5 +1,9 @@
-Open issues
-===========
+Open issues: 17.6 
+=================
+- add 'ever filtered' on album/id: list of timestamps of when it was filtered. (DONE)
+
+
+
 - send push notifs
 - use PUMA web server (Read about when to scale dynos?)
 - add indexes:
