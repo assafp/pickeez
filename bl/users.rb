@@ -25,7 +25,8 @@ module Users
   end
 
   def basic_data(field, val)
-    $users.project({field.to_s => val}, ['fb_id','name','pic_url','verified_phone', 'phone'])
+    #$users.project({field.to_s => val}, ['fb_id','name','pic_url','verified_phone', 'phone'])
+    $users.find({field.to_s => val}, fields: ['fb_id','name','pic_url','verified_phone', 'phone']).to_a.last
   end
 
   def get_or_create_by_fb_id(fb_id, fb_data = {})
