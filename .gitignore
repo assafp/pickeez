@@ -1,5 +1,7 @@
 .idea
 .build
+.ruby-gemset
+.ruby-version
 npm*.log
 node_modules
 nohup.out
